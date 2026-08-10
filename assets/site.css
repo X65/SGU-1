@@ -55,6 +55,8 @@ a {
 }
 .descriptionBlock > p a {
   text-decoration: underline;
+  text-decoration-color: #8d8e87;
+  text-decoration-style: dotted;
   text-decoration-thickness: 1px;
   text-underline-offset: 2px;
 }
