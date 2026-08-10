@@ -59,38 +59,66 @@
  * The SGU-1 emulation was imported into the tracker on 2026-06-11; entries record
  * every semantic or API change to sgu.h/sgu.c since, newest first.
  *
- * - 2026-08-04  duty is SIGNED (int8_t): |duty| is the LOW-run length out of the
- *   128-step period and the sign places that run -- positive at the period start
- *   (____|~~~~), negative at the end (~~~~|____) -- so a duty sweep wraps
- *   continuously through both rails (127 -> -128 and -1 -> 0). Decode: the 7-bit
- *   compare on duty[6:0] with its result inverted by duty[7]; the same split point
- *   drives the HALF/ABS wave modifiers on SINE/TRIANGLE/SAWTOOTH. (Previously the
- *   register was unsigned 0..127 and every value >= 128 collapsed to DC low.)
+ * - 2026-08-04 duty is SIGNED (int8_t): |duty| is the LOW-run length out of the
+ *              128-step period and the sign places that run -- positive at the
+ *              period start (____|~~~~), negative at the end (~~~~|____) -- so
+ *              a duty sweep wraps continuously through both rails (127 -> -128
+ *              and -1 -> 0). Decode: the 7-bit compare on duty[6:0] with its
+ *              result inverted by duty[7]; the same split point drives the
+ *              HALF/ABS wave modifiers on SINE/TRIANGLE/SAWTOOTH. (Previously
+ *              the register was unsigned 0..127 and every value >= 128
+ *              collapsed to DC low.)
  * - 2026-08-02 SGU_Init() now accepts externally owned PCM memory and its size;
- *              PCM storage may contain multiple 64 KiB banks and playback wraps
- *              within the active bank.
- * - 2026-07-26  Sticky output clip status flag (SGU_FLAG_CLIP), latched where the
- *   hardware limiter saturates (ssat16 of mix>>1); read-to-clear via SGU_GetFlags.
- * - 2026-07-24  One-shot VOL sweep clamps continuously at `bound`: it holds there,
- *   and runs to the hard rail only when `bound` lies strictly behind the armed
- *   direction (fixes the fade-past-bound volume inversion).
- * - 2026-07-23  Volume sweep rework: signed int8 volume ranges, segmented
- *   one-shot / repeat / ping-pong run modes (VOL amt b7/b6), and sweeps apply
- *   independently of key state.
- * - 2026-07-14  GATE/TRIG keying model: GATE is the envelope key LEVEL (SID-style
- *   -- a GATE cycle re-attacks from the envelope's CURRENT attenuation); TRIG
- *   (FLAGS0 b1) is a self-clearing one-shot hard retrigger that attacks from
- *   silence and arms the per-operator key-on DELAY window.
- * - 2026-06-29  Sweep cleanup: unified boundary conditions, countdown cleared
- *   while a sweep is not running, sweep parameter block documented.
- * - 2026-06-28  OPL3-accurate key-level scaling (KSL); SGU_Reset also clears the
- *   global DC-blocker HPF state.
- * - 2026-06-25  SGU_PATCH_CHN(reg): index of a channel register inside a
- *   per-channel patch image (operators first).
- * - 2026-06-23  Envelope readout refactor: operator envelope level extracted into
- *   sgu_get_operator_envelope_level() (no behavior change).
- * - 2026-06-18  SGU_GetEnvelope(): per-channel envelope loudness readout.
- * - 2026-06-11  Initial SGU-1 implementation imported into the tracker.
+ *              PCM storage may contain multiple 64 KiB banks and playback
+ *              wraps within the active bank.
+ * - 2026-07-26 Sticky output clip status flag (SGU_FLAG_CLIP), latched where
+ *              the hardware limiter saturates (ssat16 of mix>>1); read-to-clear
+ *              via SGU_GetFlags.
+ * - 2026-07-24 One-shot VOL sweep clamps continuously at `bound`: it holds
+ *              there, and runs to the hard rail only when `bound` lies strictly
+ *              behind the armed direction (fixes the fade-past-bound volume
+ *              inversion).
+ * - 2026-07-23 Volume sweep rework: signed int8 volume ranges, segmented
+ *              one-shot / repeat / ping-pong run modes (VOL amt b7/b6), and
+ *              sweeps apply independently of key state.
+ * - 2026-07-14 GATE/TRIG keying model: GATE is the envelope key LEVEL
+ *              (SID-style -- a GATE cycle re-attacks from the envelope's
+ *              CURRENT attenuation); TRIG (FLAGS0 b1) is a self-clearing
+ *              one-shot hard retrigger that attacks from silence and arms the
+ *              per-operator key-on DELAY window.
+ * - 2026-07-11 Implemented the LFOW AM/PM shape register and gated PCM playback
+ *              from the channel PCM control bit.
+ * - 2026-06-29 Sweep cleanup: unified boundary conditions, countdown cleared
+ *              while a sweep is not running, sweep parameter block documented.
+ * - 2026-06-28 OPL3-accurate key-level scaling (KSL); SGU_Reset also clears
+ *              the global DC-blocker HPF state.
+ * - 2026-06-25 SGU_PATCH_CHN(reg): index of a channel register inside a
+ *              per-channel patch image (operators first).
+ * - 2026-06-23 Envelope readout refactor: operator envelope level extracted
+ *              into sgu_get_operator_envelope_level() (no behavior change).
+ * - 2026-06-18 SGU_GetEnvelope(): per-channel envelope loudness readout.
+ * - 2026-06-11 Initial SGU-1 implementation imported into the tracker.
+ * - 2026-05-06 SGU-1 test-batch hardware arrived, marking the transition from
+ *              prototype development toward physical chip testing.
+ * - 2026-02-23 Added a no-op __attribute__ fallback for compilers without the
+ *              GCC/Clang extension.
+ * - 2026-02-20 Added the SGU_ON_MCU build configuration for firmware targets.
+ * - 2026-02-20 Added split setup/channel/finalize APIs for dual-core audio
+ *              rendering.
+ * - 2026-02-19 Optimized SGU synthesis and data layout for the RP2350.
+ * - 2026-02-19 Reorganized per-channel operator state as an array of structures
+ *              to improve cache locality.
+ * - 2026-02-05 SGU-1 reached its feature-complete baseline: 9-channel
+ *              four-operator FM, eight operator waveforms, ESFM routing,
+ *              OPN-style envelopes, resonant filters, sweeps, phase timers,
+ *              PCM playback, and a hardware sequencer.
+ * - 2026-01-06 Added output gain, 32-bit mix headroom, and soft-clipped output
+ *              limiting at the firmware audio stage.
+ * - 2026-01-06 Demonstrated SGU-1 playback on an RP2350 plus audio CODEC,
+ *              producing stereo 48 kHz I²S output from a six-channel SID
+ *              translation.
+ * - 2025-12-27 Introduced SGU-1 as a custom sound chip based on tildearrow
+ *              Sound Unit synthesis behind a memory-mapped register interface.
  */
 
 #define SGU_CHIP_CLOCK     (48000) // 48kHz
