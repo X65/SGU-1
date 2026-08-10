@@ -33,6 +33,8 @@ Host software and target-side playback can be adapted to the target system. Curr
 
 [sgu-tracker](https://github.com/X65/sgu-tracker) and the 6502 SGM player are used as a development and proof-of-concept platform. They demonstrate one possible toolchain for instrument definition, sequencing, effect control, module export, and playback; they are not required components of the SGU-1 architecture.
 
+Listen to the [SGU-1 playing other chips](https://www.youtube.com/playlist?list=PLbSCQdOP-_xh-mkkLIiCdmu_ArqHcOkYM) playlist for demonstrations of SGU-1 reproducing music written for other sound chips.
+
 ## Documentation
 
 - [SGU-1 product page](https://x65.zone/sgu-1/)
