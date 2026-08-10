@@ -38,6 +38,61 @@ Host software and target-side playback can be adapted to the target system. Curr
 - [SGU-1 product page](https://x65.zone/sgu-1/)
 - [X65 memory map and register definitions](https://tinyurl.com/x65-memory-map)
 
+### SGU-1 register map
+
+The CPU-visible SGU-1 window occupies `$FEC0`–`$FEFF`. Registers `$FEC0`–`$FEFE`
+access the channel selected by `CHANNEL_SELECT`; multi-byte values are little-endian
+(`LO` followed by `HI`).
+
+Each channel has four operators with the same eight-register layout. The table below
+describes Operator 0 at `$FEC0`–`$FEC7`; Operators 1–3 mirror its R0–R7 layout.
+
+| Address | Register | Bit layout / value | Description |
+| --- | --- | --- | --- |
+| `$FEC0` | `OP0_R0` | `[7] TRM`, `[6] VIB`, `[5:4] KSR`, `[3:0] MUL` | Operator tremolo/vibrato enables, 2-bit key scaling, and frequency multiplier (`0` = 0.5x; `1`–`15` = 1x–15x). |
+| `$FEC1` | `OP0_R1` | `[7:6] KSL`, `[5:0] TL_lo6` | Key-scale level and low six bits of 7-bit total attenuation (0.75 dB steps); `TL_msb` is in R6. |
+| `$FEC2` | `OP0_R2` | `[7:4] AR_lo4`, `[3:0] DR_lo4` | Low four bits of the attack and decay rates; their MSBs are in R7. |
+| `$FEC3` | `OP0_R3` | `[7:4] SL`, `[3:0] RR` | Sustain level and release rate. |
+| `$FEC4` | `OP0_R4` | `[7:5] DT`, `[4:0] SR` | Detune and sustain rate. In fixed-frequency mode, `DT` selects the frequency scale instead. |
+| `$FEC5` | `OP0_R5` | `[7:5] DELAY`, `[4] FIX`, `[3:0] WPAR` | Key-on delay of `2^(DELAY+8)` samples, fixed-frequency mode, and waveform-dependent shaping. |
+| `$FEC6` | `OP0_R6` | `[7] TRMD`, `[6] VIBD`, `[5] SYNC`, `[4] RING`, `[3:1] MOD`, `[0] TL_msb` | LFO depths, hard sync, operator ring modulation, modulation depth (6 dB steps), and total-level MSB. On Operator 0, `MOD` controls feedback. |
+| `$FEC7` | `OP0_R7` | `[7:5] OUT`, `[4] AR_msb`, `[3] DR_msb`, `[2:0] WAVE` | Direct output level (6 dB steps), rate MSBs, and waveform: `0` sine, `1` triangle, `2` sawtooth, `3` pulse, `4` noise, `5` periodic noise, `6` reserved, `7` PCM sample. |
+| `$FEC8`–`$FECF` | `OP1_R0`–`OP1_R7` | Same as Operator 0 R0–R7 | Operator 1 mirrors `$FEC0`–`$FEC7` at an offset of `$08`. |
+| `$FED0`–`$FED7` | `OP2_R0`–`OP2_R7` | Same as Operator 0 R0–R7 | Operator 2 mirrors `$FEC0`–`$FEC7` at an offset of `$10`. |
+| `$FED8`–`$FEDF` | `OP3_R0`–`OP3_R7` | Same as Operator 0 R0–R7 | Operator 3 mirrors `$FEC0`–`$FEC7` at an offset of `$18`. |
+| `$FEE0` | `FREQ_LO` | Frequency `[7:0]` | Low byte of the 16-bit channel phase increment or PCM playback rate. |
+| `$FEE1` | `FREQ_HI` | Frequency `[15:8]` | High byte of the 16-bit channel phase increment or PCM playback rate. |
+| `$FEE2` | `VOL` | Signed 8-bit | Channel volume; negative values invert the output phase. |
+| `$FEE3` | `PAN` | Signed 8-bit | Stereo position; negative pans left and positive pans right. |
+| `$FEE4` | `FLAGS0` | `[7] NSBAND`, `[6] NSHIGH`, `[5] NSLOW`, `[4] RING_MOD`, `[3] PCM`, `[2] reserved`, `[1] TRIG`, `[0] GATE` | Channel control. `TRIG` is a self-clearing hard retrigger; `GATE` is level-driven. The filter bits independently select band-, high-, and low-pass output. |
+| `$FEE5` | `FLAGS1` | `[7] reserved`, `[6] CUT_SWEEP`, `[5] VOL_SWEEP`, `[4] FREQ_SWEEP`, `[3] TIMER_SYNC`, `[2] PCM_LOOP`, `[1] FILTER_PHASE_RESET`, `[0] PHASE_RESET` | Sweep and PCM-loop enables plus timer sync. Both phase-reset bits are one-shot requests. |
+| `$FEE6` | `CUTOFF_LO` | Cutoff `[7:0]` | Low byte of the 16-bit filter cutoff control. |
+| `$FEE7` | `CUTOFF_HI` | Cutoff `[15:8]` | High byte of the 16-bit filter cutoff control. |
+| `$FEE8` | `DUTY` | Signed 8-bit | Pulse width and placement. The magnitude is the low-run length; the sign places it at the beginning or end of the period. |
+| `$FEE9` | `RESON` | Unsigned 8-bit | Filter resonance amount (`0`–`255`). |
+| `$FEEA` | `PCMPOS_LO` | PCM position `[7:0]` | Low byte of the current PCM sample position. |
+| `$FEEB` | `PCMPOS_HI` | PCM position `[15:8]` | High byte of the current PCM sample position. |
+| `$FEEC` | `PCMBND_LO` | PCM boundary `[7:0]` | Low byte of the PCM boundary/end position. |
+| `$FEED` | `PCMBND_HI` | PCM boundary `[15:8]` | High byte of the PCM boundary/end position. |
+| `$FEEE` | `PCMRST_LO` | PCM restart `[7:0]` | Low byte of the PCM loop restart position; also the base address for the operator sample waveform. |
+| `$FEEF` | `PCMRST_HI` | PCM restart `[15:8]` | High byte of the PCM loop restart position. |
+| `$FEF0` | `SWFREQ_SPEED_LO` | Speed `[7:0]` | Low byte of samples between frequency-sweep steps; zero disables the sweep. |
+| `$FEF1` | `SWFREQ_SPEED_HI` | Speed `[15:8]` | High byte of samples between frequency-sweep steps. |
+| `$FEF2` | `SWFREQ_AMT` | `[7] DIR`, `[6:0] STEP` | Exponential frequency-sweep direction (`1` = up) and step size. |
+| `$FEF3` | `SWFREQ_BOUND` | Unsigned 8-bit | Coarse frequency target; the sweep saturates at `BOUND << 8`. |
+| `$FEF4` | `SWVOL_SPEED_LO` | Speed `[7:0]` | Low byte of samples between volume-sweep steps; zero disables the sweep. |
+| `$FEF5` | `SWVOL_SPEED_HI` | Speed `[15:8]` | High byte of samples between volume-sweep steps. |
+| `$FEF6` | `SWVOL_AMT` | `[7] BOUNCE`, `[6] LOOP`, `[5] DIR`, `[4:0] STEP` | Linear signed volume-sweep mode, direction (`1` = up), and step size. |
+| `$FEF7` | `SWVOL_BOUND` | Signed 8-bit | Volume target and segment boundary; used by one-shot, repeat, and ping-pong modes. |
+| `$FEF8` | `SWCUT_SPEED_LO` | Speed `[7:0]` | Low byte of samples between cutoff-sweep steps; zero disables the sweep. |
+| `$FEF9` | `SWCUT_SPEED_HI` | Speed `[15:8]` | High byte of samples between cutoff-sweep steps. |
+| `$FEFA` | `SWCUT_AMT` | `[7] DIR`, `[6:0] STEP` | Cutoff-sweep direction (`1` = up) and step size; upward sweeps are linear and downward sweeps are exponential. |
+| `$FEFB` | `SWCUT_BOUND` | Unsigned 8-bit | Coarse cutoff target; the sweep saturates at `BOUND << 8`. |
+| `$FEFC` | `RESTIMER_LO` | Reset period `[7:0]` | Low byte of the periodic phase-reset interval used when `TIMER_SYNC` is enabled. |
+| `$FEFD` | `RESTIMER_HI` | Reset period `[15:8]` | High byte of the periodic phase-reset interval. |
+| `$FEFE` | `LFOW` | `[7:4] reserved`, `[3:2] PM_SHAPE`, `[1:0] AM_SHAPE` | AM and PM LFO shapes: `0` saw, `1` square, `2` triangle, `3` noise. |
+| `$FEFF` | `CHANNEL_SELECT` (`SPECIAL`) | Channel number | Selects the channel exposed through the register window. Values `$00`–`$08` select the nine synthesis channels; `$FF` maps implementation-specific service registers. |
+
 Additional product, register, hardware, and software documentation is in development.
 
 ## Website
