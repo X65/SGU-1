@@ -399,8 +399,20 @@ th {
 td {
   font-weight: 650;
 }
+.partCards {
+  gap: 20px;
+  display: grid;
+}
 .partCard {
   background: #fff;
+}
+.partCard a {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+.partCard a:hover {
+  text-decoration-thickness: 2px;
 }
 .partCardHead {
   color: var(--black);
