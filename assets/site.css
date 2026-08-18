@@ -137,6 +137,7 @@ nav a {
   color: #d7d8d3;
   font-size: var(--body);
   font-weight: 650;
+  white-space: nowrap;
 }
 nav a:hover {
   color: var(--yellow);
