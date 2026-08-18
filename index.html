@@ -164,7 +164,7 @@
         <div class="shell headerInner">
           <a class="brand" href="#top"><span class="logo" aria-label="SGU-1"><span class="logoWord">SGU</span><span class="logoOne">1</span></span><span>Sound Generator Unit 1</span></a>
           <nav aria-label="Primary navigation">
-            <a href="#overview">Overview</a><a href="#parameters">Parameters</a><a href="#documentation">Design resources</a><a href="#hardware">Prototype</a><a href="https://github.com/X65/SGU-1" target="_blank" rel="noopener noreferrer">Source ↗</a>
+            <a href="#overview">Overview</a><a href="#parameters">Parameters</a><a href="#documentation">Design resources</a><a href="#hardware">Prototype</a><a href="https://tracker.x65.zone/" target="_blank" rel="noopener noreferrer">Tracker ↗</a><a href="https://github.com/X65/SGU-1" target="_blank" rel="noopener noreferrer">Source ↗</a>
           </nav>
           <p class="headerStatus"><span>Status:</span> Engineering prototype</p>
         </div>
@@ -211,7 +211,7 @@
             </ul>
           </div>
           <article class="descriptionBlock">
-            <h3>Architecture and integration</h3><p>SGU-1 is a new audio-synthesis device under development as part of the <a href="https://x65.zone/" target="_blank">X65 Microcomputer Project</a>. Its architecture combines established concepts from OPL/ESFM, OPM, SID, POKEY and Paula, including four-operator FM synthesis, flexible operator routing, per-channel subtractive filtering and hardware sweep units.</p><p>The device is implemented with a microcontroller and an audio CODEC. Together they produce a stereo 48 kHz I²S stream that the CODEC converts to an analog stereo line-level output. Developing a dedicated device provides the synthesis capabilities required by X65 without relying on advanced audio-synthesis chips that are no longer in production.</p><p>SGU-1 is intended for modern retro computers, original vintage machines, and modern embedded systems.</p><p>Host software and target-side playback may be adapted to the requirements of the system. <b>sgu-tracker</b> and the 6502 SGM player serve as the current development and proof-of-concept platform, demonstrating instrument definition, sequencing, effect control, module export, and playback as one possible integration path.</p>
+            <h3>Architecture and integration</h3><p>SGU-1 is a new audio-synthesis device under development as part of the <a href="https://x65.zone/" target="_blank">X65 Microcomputer Project</a>. Its architecture combines established concepts from OPL/ESFM, OPM, SID, POKEY and Paula, including four-operator FM synthesis, flexible operator routing, per-channel subtractive filtering and hardware sweep units.</p><p>The device is implemented with a microcontroller and an audio CODEC. Together they produce a stereo 48 kHz I²S stream that the CODEC converts to an analog stereo line-level output. Developing a dedicated device provides the synthesis capabilities required by X65 without relying on advanced audio-synthesis chips that are no longer in production.</p><p>SGU-1 is intended for modern retro computers, original vintage machines, and modern embedded systems.</p><p>Host software and target-side playback may be adapted to the requirements of the system. <b><a href="https://tracker.x65.zone/" target="_blank" rel="noopener noreferrer">sgu-tracker</a></b> and the 6502 SGM player serve as the current development and proof-of-concept platform, demonstrating instrument definition, sequencing, effect control, module export, and playback as one possible integration path.</p>
             <aside>
               <b>Prototype information</b><span>Electrical limits, pin assignments, and production specifications have not been released. Revision 1 data must not be used for production designs.</span>
             </aside>
@@ -341,6 +341,9 @@
           </div>
           <div class="docRow" role="row">
             <b role="cell">Software tools</b><span role="cell">sgu-tracker, C and 6502 playback software</span><strong role="cell">IN DEVELOPMENT</strong>
+          </div>
+          <div class="docRow" role="row">
+            <b role="cell">SGU-Tracker</b><span role="cell">Dedicated online instrument editor, sequencer and playback environment</span><strong role="cell"><a href="https://tracker.x65.zone/" target="_blank" rel="noopener noreferrer">AVAILABLE ↗</a></strong>
           </div>
           <div class="docRow" role="row">
             <b role="cell">Source repository</b><span role="cell">SGU-1 hardware and software development sources on GitHub</span><strong role="cell"><a href="https://github.com/X65/SGU-1" target="_blank" rel="noopener noreferrer">AVAILABLE ↗</a></strong>
