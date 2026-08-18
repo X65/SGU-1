@@ -59,6 +59,12 @@
  * The SGU-1 emulation was imported into the tracker on 2026-06-11; entries record
  * every semantic or API change to sgu.h/sgu.c since, newest first.
  *
+ * - 2026-08-11  DT encoding stated correctly -- DESCRIPTION ONLY, no behavior change.
+ *   The field is Yamaha sign-magnitude, as OPN/OPM DT1: bit 2 is the sign and bits
+ *   1:0 the magnitude, so 0 and 4 both mean no detune, 1..3 detune up and 5..7 down.
+ *   detune_adjustment() has always implemented this; its comment described a mapping
+ *   centred on 3, and that reading had reached doc/sgu-instrument.md and from there
+ *   every FM importer. No register, table or output moved.
  * - 2026-08-04 duty is SIGNED (int8_t): |duty| is the LOW-run length out of the
  *              128-step period and the sign places that run -- positive at the
  *              period start (____|~~~~), negative at the end (~~~~|____) -- so

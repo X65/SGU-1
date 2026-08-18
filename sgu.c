@@ -160,15 +160,13 @@ static inline uint32_t opl_key_scale_atten(uint32_t block, uint32_t fnum_4msb)
 //-------------------------------------------------
 static inline int32_t detune_adjustment(uint32_t detune, uint32_t keycode)
 {
-    // Detune uses following encoding:
-    //   0 = -3 (strongest negative)
-    //   1 = -2
-    //   2 = -1
-    //   3 =  0 (no detune)
-    //   4 = +1
-    //   5 = +2
-    //   6 = +3 (strongest positive)
-    //   7 =  0 (no detune, degenerate)
+    // Detune uses Yamaha's sign-magnitude encoding, as OPN/OPM DT1 does:
+    // bit 2 is the sign, bits 1:0 the magnitude -- so there are two zeros,
+    // and one symmetric table serves both directions via the negate below.
+    //   0 = +0 (no detune)           4 = -0 (no detune, degenerate)
+    //   1 = +1                       5 = -1
+    //   2 = +2                       6 = -2
+    //   3 = +3 (strongest positive)  7 = -3 (strongest negative)
     static uint8_t const s_detune_adjustment[32][4] = {
         // clang-format off
         { 0,  0,  1,  2 },  { 0,  0,  1,  2 },  { 0,  0,  1,  2 },  { 0,  0,  1,  2 },
@@ -1575,8 +1573,8 @@ void SGU_Write(struct SGU *sgu, uint16_t addr13, uint8_t data)
     ((uint8_t *)sgu->chan)[addr13] = data;
 }
 
-static_assert(sizeof(struct SGU_CH) == (SGU_OP_PER_CH * SGU_OP_REGS + SGU_CH_REGS), "SGU channel size mismatch");
-static_assert(SGU_REGS_PER_CH == (SGU_OP_PER_CH * SGU_OP_REGS + SGU_CH_REGS), "SGU regs size mismatch");
+_Static_assert(sizeof(struct SGU_CH) == (SGU_OP_PER_CH * SGU_OP_REGS + SGU_CH_REGS), "SGU channel size mismatch");
+_Static_assert(SGU_REGS_PER_CH == (SGU_OP_PER_CH * SGU_OP_REGS + SGU_CH_REGS), "SGU regs size mismatch");
 
 int32_t SGU_GetSample(struct SGU *sgu, uint8_t ch)
 {
