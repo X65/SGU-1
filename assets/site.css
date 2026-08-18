@@ -555,7 +555,7 @@ footer p,footer a {
 footer a {
   color: var(--yellow);
 }
-@media (width<=900px) {
+@media (width<=1050px) {
   .headerInner {
     grid-template-columns: 1fr auto;
   }
