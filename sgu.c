@@ -1573,8 +1573,8 @@ void SGU_Write(struct SGU *sgu, uint16_t addr13, uint8_t data)
     ((uint8_t *)sgu->chan)[addr13] = data;
 }
 
-_Static_assert(sizeof(struct SGU_CH) == (SGU_OP_PER_CH * SGU_OP_REGS + SGU_CH_REGS), "SGU channel size mismatch");
-_Static_assert(SGU_REGS_PER_CH == (SGU_OP_PER_CH * SGU_OP_REGS + SGU_CH_REGS), "SGU regs size mismatch");
+SGU_STATIC_ASSERT(sizeof(struct SGU_CH) == (SGU_OP_PER_CH * SGU_OP_REGS + SGU_CH_REGS), "SGU channel size mismatch");
+SGU_STATIC_ASSERT(SGU_REGS_PER_CH == (SGU_OP_PER_CH * SGU_OP_REGS + SGU_CH_REGS), "SGU regs size mismatch");
 
 int32_t SGU_GetSample(struct SGU *sgu, uint8_t ch)
 {

@@ -240,6 +240,17 @@ Additional WAVE form related parameter (per-operator, 4 bits)
 #define __attribute__(x)
 #endif
 
+#if defined(__cplusplus) && __cplusplus >= 201103L
+#define SGU_STATIC_ASSERT(cond, msg) static_assert(cond, msg)
+#elif defined(__STDC_VERSION__) && __STDC_VERSION__ >= 201112L
+#define SGU_STATIC_ASSERT(cond, msg) _Static_assert(cond, msg)
+#else
+#define SGU_STATIC_ASSERT_CAT_(a, b) a##b
+#define SGU_STATIC_ASSERT_CAT(a, b)  SGU_STATIC_ASSERT_CAT_(a, b)
+#define SGU_STATIC_ASSERT(cond, msg) \
+    typedef char SGU_STATIC_ASSERT_CAT(sgu_static_assert_, __LINE__)[(cond) ? 1 : -1]
+#endif
+
 // -----------------------------------------------------------------------------
 // Operator register offsets (0-7 within each operator's 8-byte block)
 // -----------------------------------------------------------------------------
