@@ -64,7 +64,7 @@ describes Operator 0 at `$FEC0`–`$FEC7`; Operators 1–3 mirror its R0–R7 la
 | `$FED8`–`$FEDF` | `OP3_R0`–`OP3_R7` | Same as Operator 0 R0–R7 | Operator 3 mirrors `$FEC0`–`$FEC7` at an offset of `$18`. |
 | `$FEE0` | `FREQ_LO` | Frequency `[7:0]` | Low byte of the 16-bit channel phase increment or PCM playback rate. |
 | `$FEE1` | `FREQ_HI` | Frequency `[15:8]` | High byte of the 16-bit channel phase increment or PCM playback rate. |
-| `$FEE2` | `VOL` | Signed 8-bit | Channel volume; negative values invert the output phase. |
+| `$FEE2` | `VOL` | Signed 8-bit | Channel volume; negative values invert the output amplitude. |
 | `$FEE3` | `PAN` | Signed 8-bit | Stereo position; negative pans left and positive pans right. |
 | `$FEE4` | `FLAGS0` | `[7] NSBAND`, `[6] NSHIGH`, `[5] NSLOW`, `[4] RING_MOD`, `[3] PCM`, `[2] reserved`, `[1] TRIG`, `[0] GATE` | Channel control. `TRIG` is a self-clearing hard retrigger; `GATE` is level-driven. The filter bits independently select band-, high-, and low-pass output. |
 | `$FEE5` | `FLAGS1` | `[7] reserved`, `[6] CUT_SWEEP`, `[5] VOL_SWEEP`, `[4] FREQ_SWEEP`, `[3] TIMER_SYNC`, `[2] PCM_LOOP`, `[1] FILTER_PHASE_RESET`, `[0] PHASE_RESET` | Sweep and PCM-loop enables plus timer sync. Both phase-reset bits are one-shot requests. |

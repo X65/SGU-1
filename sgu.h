@@ -532,7 +532,7 @@ struct SGU_CH
     struct SGU_OP op[SGU_OP_PER_CH];
 
     uint16_t freq; // 16-bit phase increment / playback rate
-    int8_t vol;    // signed 8-bit; sign allows inversion.
+    int8_t vol;    // signed 8-bit; sign allows amplitude inversion.
     int8_t pan;    // positive Right, negative Left
 
     // flags0:
@@ -621,7 +621,7 @@ struct SGU_CH
     // bit6 (loop) and bit7 (bounce).
     //
     // Volume is a signed int8 value spanning the complete 0x80..0x7F range. Negative values
-    // have reversed output phase but otherwise participate normally in sweep arithmetic.
+    // have reversed output amplitude but otherwise participate normally in sweep arithmetic.
     // Zero is the common hard rail between the positive and negative polarity domains.
     //
     // For looping modes, the sign of `bound` selects the active polarity domain:
