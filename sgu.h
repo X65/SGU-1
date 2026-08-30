@@ -434,6 +434,11 @@ Additional WAVE form related parameter (per-operator, 4 bits)
 #define SGU1_FLAGS1_FREQ_SWEEP         (1 << 4)
 #define SGU1_FLAGS1_VOL_SWEEP          (1 << 5)
 #define SGU1_FLAGS1_CUT_SWEEP          (1 << 6)
+// DIAG: while set on a channel, designated offsets of that channel's register
+// window read back as live diagnostics instead of the register file (writes are
+// unaffected). See SGU_RegRead for the map. Plain stored bit: any FLAGS1 write
+// with bit 7 clear switches the channel back to normal readback.
+#define SGU1_FLAGS1_DIAG               (1 << 7)
 
 // -----------------------------------------------------------------------------
 // Notes on behavior (implementation-level, not register-level)
@@ -865,6 +870,26 @@ void SGU_RequestReset(struct SGU *sgu, uint32_t parts);
 void SGU_Reset(struct SGU *sgu);
 
 void SGU_Write(struct SGU *sgu, uint16_t addr13, uint8_t data);
+
+// Read one byte of channel ch's 64-byte register window (reg 0..63), applying
+// diagnostic mode: with SGU1_FLAGS1_DIAG set on the channel, the designated
+// offsets below return live chip state; everything else (and everything, with
+// DIAG clear) returns the register file byte. This is the chip's read entry
+// point -- deployments should route CPU reads of channel banks through it so
+// the map cannot drift between them.
+//
+// Diagnostic map (op n block base = n*8; values read pre-VOL, pre-pan):
+//   op base+0  envelope attenuation, 0.375 dB steps (0 = full level, 255 = silent)
+//   op base+1  EG state in bits 1:0 (0 A, 1 D, 2 S, 3 R) | bit 2 = TRIG-armed
+//              key-on DELAY window active
+//   op base+2/+3  operator sample lo/hi (current op value, int16)
+//   $20/$21    channel sample lo/hi: raw channel mix src[ch] (int16, pre-VOL,
+//              pre-filter, pre-pan; live for PCM channels too)
+//   $22        channel envelope, 0..255 linear (SGU_GetEnvelope >> 5); reads 0
+//              for a PCM-mode channel
+// Sample lo/hi are two separate reads while rendering runs, so a pair can
+// straddle a sample boundary -- jitter, not corruption.
+uint8_t SGU_RegRead(const struct SGU *sgu, uint8_t ch, uint8_t reg);
 
 void SGU_NextSample(struct SGU *sgu, int32_t *l, int32_t *r);
 

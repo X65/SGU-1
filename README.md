@@ -67,7 +67,7 @@ describes Operator 0 at `$FEC0`–`$FEC7`; Operators 1–3 mirror its R0–R7 la
 | `$FEE2` | `VOL` | Signed 8-bit | Channel volume; negative values invert the output amplitude. |
 | `$FEE3` | `PAN` | Signed 8-bit | Stereo position; negative pans left and positive pans right. |
 | `$FEE4` | `FLAGS0` | `[7] NSBAND`, `[6] NSHIGH`, `[5] NSLOW`, `[4] RING_MOD`, `[3] PCM`, `[2] reserved`, `[1] TRIG`, `[0] GATE` | Channel control. `TRIG` is a self-clearing hard retrigger; `GATE` is level-driven. The filter bits independently select band-, high-, and low-pass output. |
-| `$FEE5` | `FLAGS1` | `[7] reserved`, `[6] CUT_SWEEP`, `[5] VOL_SWEEP`, `[4] FREQ_SWEEP`, `[3] TIMER_SYNC`, `[2] PCM_LOOP`, `[1] FILTER_PHASE_RESET`, `[0] PHASE_RESET` | Sweep and PCM-loop enables plus timer sync. Both phase-reset bits are one-shot requests. |
+| `$FEE5` | `FLAGS1` | `[7] DIAG`, `[6] CUT_SWEEP`, `[5] VOL_SWEEP`, `[4] FREQ_SWEEP`, `[3] TIMER_SYNC`, `[2] PCM_LOOP`, `[1] FILTER_PHASE_RESET`, `[0] PHASE_RESET` | Sweep and PCM-loop enables plus timer sync. Both phase-reset bits are one-shot requests. `DIAG` switches the channel's readback to diagnostic mode (see below). |
 | `$FEE6` | `CUTOFF_LO` | Cutoff `[7:0]` | Low byte of the 16-bit filter cutoff control. |
 | `$FEE7` | `CUTOFF_HI` | Cutoff `[15:8]` | High byte of the 16-bit filter cutoff control. |
 | `$FEE8` | `DUTY` | Signed 8-bit | Pulse width and placement. The magnitude is the low-run length; the sign places it at the beginning or end of the period. |
@@ -94,6 +94,24 @@ describes Operator 0 at `$FEC0`–`$FEC7`; Operators 1–3 mirror its R0–R7 la
 | `$FEFD` | `RESTIMER_HI` | Reset period `[15:8]` | High byte of the periodic phase-reset interval. |
 | `$FEFE` | `LFOW` | `[7:4] reserved`, `[3:2] PM_SHAPE`, `[1:0] AM_SHAPE` | AM and PM LFO shapes: `0` saw, `1` square, `2` triangle, `3` noise. |
 | `$FEFF` | `CHANNEL_SELECT` (`SPECIAL`) | Channel number | Selects the channel exposed through the register window. Values `$00`–`$08` select the nine synthesis channels; `$FF` maps implementation-specific service registers. |
+
+### Diagnostic mode (`FLAGS1` bit 7)
+
+Setting `DIAG` on a channel makes designated offsets of that channel's 64-byte
+window dual-function: writes still land in the register file as usual, reads
+return live chip state. Everything not listed (and everything while `DIAG` is
+clear) reads the register file. All values are pre-`VOL`, pre-pan.
+
+| window offset | diag read |
+| --- | --- |
+| op *n* base+0 | envelope attenuation, 0.375 dB steps (0 = full level, 255 = silent) |
+| op *n* base+1 | EG state in bits 1:0 (attack/decay/sustain/release), bit 2 = TRIG-armed key-on DELAY window active |
+| op *n* base+2/+3 | operator sample lo/hi (current operator value, `int16`) |
+| `$FEE0/$FEE1` (`FREQ` slots) | channel sample lo/hi: the raw channel mix, `int16`, pre-`VOL`/filter/pan; live for PCM channels too |
+| `$FEE2` (`VOL` slot) | channel envelope, 0..255 linear (`SGU_GetEnvelope >> 5`); 0 for a PCM-mode channel |
+
+Sample lo/hi come from two separate bus reads while rendering runs at 48 kHz, so
+a pair can straddle a sample boundary -- jitter, not corruption.
 
 Additional product, register, hardware, and software documentation is in development.
 
