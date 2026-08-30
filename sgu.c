@@ -1679,3 +1679,52 @@ int32_t SGU_GetEnvelope(struct SGU *sgu, uint8_t ch)
     acc = minval(acc, 0x1FFFu);
     return (int32_t)acc;
 }
+
+uint8_t SGU_RegRead(const struct SGU *sgu, uint8_t ch, uint8_t reg)
+{
+    // Precondition: ch < SGU_CHNS (bank routing is the deployment's job).
+    reg &= SGU_REGS_PER_CH - 1;
+    const uint8_t file = ((const uint8_t *)sgu->chan)[((uint16_t)ch << 6) | reg];
+    if (!(sgu->chan[ch].flags1 & SGU1_FLAGS1_DIAG))
+        return file;
+
+    const struct sgu_ch_state *cs = &sgu->m_channel[ch];
+    if (reg < SGU_OP_PER_CH * SGU_OP_REGS)
+    {
+        const unsigned op = reg >> 3;
+        switch (reg & 7)
+        {
+        case 0: // envelope attenuation in 0.375 dB steps; 0x3FF>>2 == 0xFF exact
+            return (uint8_t)(minval(cs->op[op].envelope_attenuation, 0x3FFu) >> 2);
+        case 1: // EG state | DELAY window armed
+            return (uint8_t)(((unsigned)cs->op[op].envelope_state & 0x3u)
+                             | (OP_FLAG_GET(cs->op_flags, OP_FLAGS_EG_DELAY, op) << 2));
+        case 2:
+            return (uint8_t)((uint16_t)cs->op[op].value & 0xFFu);
+        case 3:
+            return (uint8_t)((uint16_t)cs->op[op].value >> 8);
+        default:
+            return file;
+        }
+    }
+    switch (reg)
+    {
+    case SGU_PATCH_CHN(SGU1_CHN_FREQ_L):
+        return (uint8_t)((uint16_t)sgu->src[ch] & 0xFFu);
+    case SGU_PATCH_CHN(SGU1_CHN_FREQ_H):
+        return (uint8_t)((uint16_t)sgu->src[ch] >> 8);
+    case SGU_PATCH_CHN(SGU1_CHN_VOL): {
+        // Channel envelope, pre-VOL (SGU_GetEnvelope semantics, Q13 -> byte).
+        // A PCM channel reads 0 by contract: its operator attenuations are
+        // frozen at whatever they last held, so the sum would be stale.
+        if (sgu->muted[ch] || (sgu->chan[ch].flags0 & SGU1_FLAGS0_PCM_MASK))
+            return 0;
+        uint32_t acc = 0;
+        for (unsigned op = 0; op < SGU_OP_PER_CH; op++)
+            acc += sgu_get_operator_envelope_level(sgu, cs, ch, op);
+        return (uint8_t)(minval(acc, 0x1FFFu) >> 5);
+    }
+    default:
+        return file;
+    }
+}
