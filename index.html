@@ -3,7 +3,8 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="preload" href="./media/sgu-1-render-gold.png" as="image" />
+    <meta name="theme-color" content="#1a1b18" />
+    <link rel="preload" href="./media/sgu-1-render-gold.webp" as="image" type="image/webp" />
     <link rel="stylesheet" href="./assets/site.css" />
     <title>SGU-1 — Programmable Sound Generator</title>
     <meta
@@ -39,9 +40,27 @@
     <link rel="apple-touch-icon" sizes="180x180" href="./assets/apple-touch-icon.png" />
     <link rel="preload" href="./assets/geist-98bbbccb.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="./assets/geist-mono-013b2f2f.woff2" as="font" type="font/woff2" crossorigin />
-    <link rel="preload" href="./assets/orbitron-6406bcd4.woff2" as="font" type="font/woff2" crossorigin />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Product",
+        "name": "SGU-1 — Programmable Sound Generator",
+        "sku": "SGU-1",
+        "category": "Programmable sound generator module",
+        "image": "https://sgu-1.x65.zone/media/sgu-1-render-gold.png",
+        "description": "A nine-channel stereo sound generator with four-operator FM synthesis, per-channel filtering, hardware sweeps and PCM playback, developed for the X65 Microcomputer Project.",
+        "url": "https://sgu-1.x65.zone/",
+        "brand": { "@type": "Brand", "name": "X65" },
+        "manufacturer": {
+          "@type": "Organization",
+          "name": "X65 Microcomputer Project",
+          "url": "https://x65.zone/"
+        }
+      }
+    </script>
   </head>
   <body class="antialiased">
+    <a class="skipLink" href="#overview">Skip to content</a>
     <header class="siteHeader" id="top">
       <div class="shell headerInner">
         <a class="brand" href="#top"
@@ -89,7 +108,16 @@
           </div>
           <figure class="productImage">
             <div class="imageStage">
-              <img src="./media/sgu-1-render-gold.png" alt="Gold SGU-1 programmable sound generator module render" />
+              <picture>
+                <source srcset="./media/sgu-1-render-gold.webp" type="image/webp" />
+                <img
+                  src="./media/sgu-1-render-gold.png"
+                  alt="Gold SGU-1 programmable sound generator module render"
+                  width="1271"
+                  height="1130"
+                  fetchpriority="high"
+                />
+              </picture>
             </div>
             <figcaption><span>SGU-1 REV 1</span><span>Component-side product render</span></figcaption>
           </figure>
@@ -353,31 +381,27 @@
         <div class="demoGrid">
           <div class="demoCopy">
             <h2 id="demo-title">Listen to SGU-1</h2>
-            <p>
-              Recorded demonstrations of the synthesis engine, starting from playlist item 9. Playback begins muted
-              where browser policy requires it.
-            </p>
+            <p>Recorded demonstrations of the synthesis engine, played back through the SGU-1 soft-core.</p>
             <a href="https://tracker.x65.zone/" target="_blank" rel="noopener noreferrer"
               >Open the interactive SGU-Tracker <span aria-hidden="true">↗</span></a
             >
           </div>
           <div class="videoFrame">
-            <iframe
-              src="https://www.youtube.com/embed/jBhUl498EfY?list=PLbSCQdOP-_xh-mkkLIiCdmu_ArqHcOkYM&amp;index=9&amp;autoplay=1&amp;mute=1&amp;loop=1&amp;playsinline=1"
-              title="SGU-1 sound demonstration playlist"
-              allow="
-                accelerometer;
-                autoplay;
-                clipboard-write;
-                encrypted-media;
-                gyroscope;
-                picture-in-picture;
-                web-share;
-              "
-              referrerpolicy="strict-origin-when-cross-origin"
-              loading="lazy"
-              allowfullscreen
-            ></iframe>
+            <button
+              type="button"
+              class="videoFacade"
+              data-embed="https://www.youtube-nocookie.com/embed/jBhUl498EfY?list=PLbSCQdOP-_xh-mkkLIiCdmu_ArqHcOkYM&amp;index=9&amp;autoplay=1&amp;playsinline=1&amp;rel=0"
+              aria-label="Play SGU-1 sound demonstration on YouTube"
+            >
+              <img
+                src="https://i.ytimg.com/vi/jBhUl498EfY/hqdefault.jpg"
+                alt=""
+                width="480"
+                height="360"
+                loading="lazy"
+              />
+              <span class="videoPlay" aria-hidden="true"></span>
+            </button>
           </div>
         </div>
       </section>
@@ -398,12 +422,12 @@
             </div>
             <div class="resourceRow" role="row">
               <strong role="cell">Product brief</strong
-              ><span role="cell">Architecture and system integration overview</span><b role="cell">IN PREPARATION</b>
+              ><span role="cell">Architecture and system integration overview</span><b role="cell" data-label="Status / action">IN PREPARATION</b>
             </div>
             <div class="resourceRow" role="row">
               <strong role="cell">Register reference</strong
               ><span role="cell">Host control, synthesis and status register definitions</span
-              ><b role="cell"
+              ><b role="cell" data-label="Status / action"
                 ><a href="https://tinyurl.com/x65-memory-map" target="_blank" rel="noopener noreferrer"
                   >IN DEVELOPMENT <span aria-hidden="true">↗</span></a
                 ></b
@@ -411,16 +435,16 @@
             </div>
             <div class="resourceRow" role="row">
               <strong role="cell">Gate and trigger behavior</strong
-              ><span role="cell">Level-driven GATE and one-shot TRIG semantics</span><b role="cell">IN DEVELOPMENT</b>
+              ><span role="cell">Level-driven GATE and one-shot TRIG semantics</span><b role="cell" data-label="Status / action">IN DEVELOPMENT</b>
             </div>
             <div class="resourceRow" role="row">
               <strong role="cell">Hardware design files</strong
-              ><span role="cell">Module footprint, pin assignment and reference design</span><b role="cell">PLANNED</b>
+              ><span role="cell">Module footprint, pin assignment and reference design</span><b role="cell" data-label="Status / action">PLANNED</b>
             </div>
             <div class="resourceRow" role="row">
               <strong role="cell">SGU-Tracker</strong
               ><span role="cell">Online instrument editor, sequencer and playback environment</span
-              ><b role="cell"
+              ><b role="cell" data-label="Status / action"
                 ><a href="https://tracker.x65.zone/" target="_blank" rel="noopener noreferrer"
                   >OPEN TRACKER <span aria-hidden="true">↗</span></a
                 ></b
@@ -429,7 +453,7 @@
             <div class="resourceRow" role="row">
               <strong role="cell">Soft-core source</strong
               ><span role="cell">Shared C implementation used by the tracker and module</span
-              ><b role="cell"
+              ><b role="cell" data-label="Status / action"
                 ><a href="https://github.com/X65/SGU-1" target="_blank" rel="noopener noreferrer"
                   >VIEW SOURCE <span aria-hidden="true">↗</span></a
                 ></b
@@ -450,21 +474,31 @@
           </div>
           <div class="hardwareGrid">
             <figure>
-              <img
-                src="./media/sgu-1-prototypes.jpeg"
-                alt="Three assembled SGU-1 prototype boards beside a match for scale"
-                loading="lazy"
-              />
+              <picture>
+                <source srcset="./media/sgu-1-prototypes.webp" type="image/webp" />
+                <img
+                  src="./media/sgu-1-prototypes.jpeg"
+                  alt="Three assembled SGU-1 prototype boards beside a match for scale"
+                  width="768"
+                  height="591"
+                  loading="lazy"
+                />
+              </picture>
               <figcaption>
                 <strong>REV 1 prototype batch</strong><span>Assembled modules shown with a match for scale</span>
               </figcaption>
             </figure>
             <figure class="blackBoard">
-              <img
-                src="./media/sgu-1-render-black.png"
-                alt="Black and gold SGU-1 module component-side render"
-                loading="lazy"
-              />
+              <picture>
+                <source srcset="./media/sgu-1-render-black.webp" type="image/webp" />
+                <img
+                  src="./media/sgu-1-render-black.png"
+                  alt="Black and gold SGU-1 module component-side render"
+                  width="1271"
+                  height="1130"
+                  loading="lazy"
+                />
+              </picture>
               <figcaption><strong>Component-side study</strong><span>Castellated module form factor</span></figcaption>
             </figure>
           </div>
@@ -493,5 +527,51 @@
         </div>
       </div>
     </footer>
+    <script>
+      (function () {
+        // Click-to-load YouTube facade: no player, cookies or requests until the user opts in.
+        var facade = document.querySelector(".videoFacade");
+        if (facade) {
+          facade.addEventListener("click", function () {
+            var iframe = document.createElement("iframe");
+            iframe.src = facade.getAttribute("data-embed");
+            iframe.title = "SGU-1 sound demonstration playlist";
+            iframe.allow = "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; web-share";
+            iframe.referrerPolicy = "strict-origin-when-cross-origin";
+            iframe.allowFullscreen = true;
+            facade.replaceWith(iframe);
+          });
+        }
+
+        // Scroll-spy: mark the in-view section's nav link with aria-current.
+        var links = Array.prototype.slice.call(document.querySelectorAll('nav a[href^="#"]'));
+        var map = {};
+        links.forEach(function (a) {
+          var el = document.getElementById(a.getAttribute("href").slice(1));
+          if (el) map[el.id] = a;
+        });
+        var targets = Object.keys(map).map(function (id) {
+          return document.getElementById(id);
+        });
+        if (targets.length && "IntersectionObserver" in window) {
+          var current = null;
+          var observer = new IntersectionObserver(
+            function (entries) {
+              entries.forEach(function (entry) {
+                if (entry.isIntersecting) {
+                  if (current) current.removeAttribute("aria-current");
+                  current = map[entry.target.id];
+                  current.setAttribute("aria-current", "true");
+                }
+              });
+            },
+            { rootMargin: "-45% 0px -50% 0px" }
+          );
+          targets.forEach(function (t) {
+            observer.observe(t);
+          });
+        }
+      })();
+    </script>
   </body>
 </html>
