@@ -1,5 +1,29 @@
+@font-face {
+  font-family: "Geist";
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url(./geist-98bbbccb.woff2) format("woff2");
+}
+@font-face {
+  font-family: "Geist Mono";
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url(./geist-mono-013b2f2f.woff2) format("woff2");
+}
+@font-face {
+  font-family: "Orbitron";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url(./orbitron-6406bcd4.woff2) format("woff2");
+}
 
 :root {
+  --font-geist-sans: "Geist", sans-serif;
+  --font-geist-mono: "Geist Mono", sans-serif;
+  --font-orbitron: "Orbitron", sans-serif;
   --black: #10110f;
   --matte: #1a1b18;
   --yellow: #f9d715;
