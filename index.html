@@ -1,162 +1,617 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
-    <meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    <link rel="preload" href="./media/sgu-1-render-gold.png" as="image"/>
-    <link rel="preload" href="./media/sgu-1-prototypes.jpeg" as="image"/>
-    <link rel="preload" href="./media/sgu-1-render-black.png" as="image"/>
-    <link rel="stylesheet" href="./assets/site.css">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="preload" href="./media/sgu-1-render-gold.png" as="image" />
+    <link rel="stylesheet" href="./assets/site.css" />
     <title>SGU-1 — Programmable Sound Generator</title>
-    <meta name="description" content="A nine-channel stereo sound generator with four-operator FM synthesis, per-channel filtering, hardware sweeps and PCM playback, developed for the X65 Microcomputer Project."/>
-    <link rel="canonical" href="https://sgu-1.x65.zone/"/>
-    <meta property="og:type" content="website"/>
-    <meta property="og:site_name" content="SGU-1"/>
-    <meta property="og:title" content="SGU-1 — Programmable Sound Generator"/>
-    <meta property="og:description" content="A nine-channel stereo sound generator with four-operator FM synthesis, per-channel filtering, hardware sweeps and PCM playback, developed for the X65 Microcomputer Project."/>
-    <meta property="og:url" content="https://sgu-1.x65.zone/"/>
-    <meta property="og:image" content="https://sgu-1.x65.zone/media/sgu-1-render-gold.png"/>
-    <meta property="og:image:secure_url" content="https://sgu-1.x65.zone/media/sgu-1-render-gold.png"/>
-    <meta property="og:image:type" content="image/png"/>
-    <meta property="og:image:width" content="1271"/>
-    <meta property="og:image:height" content="1130"/>
-    <meta property="og:image:alt" content="Gold SGU-1 programmable sound generator module"/>
-    <meta name="twitter:card" content="summary_large_image"/>
-    <meta name="twitter:title" content="SGU-1 — Programmable Sound Generator"/>
-    <meta name="twitter:description" content="A nine-channel stereo sound generator developed for the X65 Microcomputer Project."/>
-    <meta name="twitter:image" content="https://sgu-1.x65.zone/media/sgu-1-render-gold.png"/>
-    <meta name="twitter:image:alt" content="Gold SGU-1 programmable sound generator module"/>
-    <link rel="icon" href="./favicon.ico" sizes="any"/>
-    <link rel="icon" type="image/png" sizes="32x32" href="./assets/icons/favicon-32x32.png"/>
-    <link rel="icon" type="image/png" sizes="16x16" href="./assets/icons/favicon-16x16.png"/>
-    <link rel="apple-touch-icon" sizes="180x180" href="./assets/icons/apple-touch-icon.png"/>
-    <link rel="preload" href="./assets/_vinext_fonts/geist-8ac0455e797f/geist-ff2310f5.woff2" as="font" type="font/woff2" crossorigin />
-    <link rel="preload" href="./assets/_vinext_fonts/geist-8ac0455e797f/geist-875ccdd4.woff2" as="font" type="font/woff2" crossorigin />
-    <link rel="preload" href="./assets/_vinext_fonts/geist-8ac0455e797f/geist-52306abf.woff2" as="font" type="font/woff2" crossorigin />
-    <link rel="preload" href="./assets/_vinext_fonts/geist-8ac0455e797f/geist-001175b1.woff2" as="font" type="font/woff2" crossorigin />
-    <link rel="preload" href="./assets/_vinext_fonts/geist-8ac0455e797f/geist-98bbbccb.woff2" as="font" type="font/woff2" crossorigin />
-    <link rel="preload" href="./assets/_vinext_fonts/geist-mono-00e989178794/geist-mono-f6b33328.woff2" as="font" type="font/woff2" crossorigin />
-    <link rel="preload" href="./assets/_vinext_fonts/geist-mono-00e989178794/geist-mono-44e03052.woff2" as="font" type="font/woff2" crossorigin />
-    <link rel="preload" href="./assets/_vinext_fonts/geist-mono-00e989178794/geist-mono-0638449e.woff2" as="font" type="font/woff2" crossorigin />
-    <link rel="preload" href="./assets/_vinext_fonts/geist-mono-00e989178794/geist-mono-971fb274.woff2" as="font" type="font/woff2" crossorigin />
-    <link rel="preload" href="./assets/_vinext_fonts/geist-mono-00e989178794/geist-mono-44745446.woff2" as="font" type="font/woff2" crossorigin />
-    <link rel="preload" href="./assets/_vinext_fonts/geist-mono-00e989178794/geist-mono-013b2f2f.woff2" as="font" type="font/woff2" crossorigin />
-    <link rel="preload" href="./assets/_vinext_fonts/orbitron-91c1bf826c93/orbitron-6406bcd4.woff2" as="font" type="font/woff2" crossorigin />
+    <meta
+      name="description"
+      content="A nine-channel stereo sound generator with four-operator FM synthesis, per-channel filtering, hardware sweeps and PCM playback, developed for the X65 Microcomputer Project."
+    />
+    <link rel="canonical" href="https://sgu-1.x65.zone/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="SGU-1" />
+    <meta property="og:title" content="SGU-1 — Programmable Sound Generator" />
+    <meta
+      property="og:description"
+      content="A nine-channel stereo sound generator with four-operator FM synthesis, per-channel filtering, hardware sweeps and PCM playback, developed for the X65 Microcomputer Project."
+    />
+    <meta property="og:url" content="https://sgu-1.x65.zone/" />
+    <meta property="og:image" content="https://sgu-1.x65.zone/media/sgu-1-render-gold.png" />
+    <meta property="og:image:secure_url" content="https://sgu-1.x65.zone/media/sgu-1-render-gold.png" />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="1271" />
+    <meta property="og:image:height" content="1130" />
+    <meta property="og:image:alt" content="Gold SGU-1 programmable sound generator module" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="SGU-1 — Programmable Sound Generator" />
+    <meta
+      name="twitter:description"
+      content="A nine-channel stereo sound generator developed for the X65 Microcomputer Project."
+    />
+    <meta name="twitter:image" content="https://sgu-1.x65.zone/media/sgu-1-render-gold.png" />
+    <meta name="twitter:image:alt" content="Gold SGU-1 programmable sound generator module" />
+    <link rel="icon" href="./favicon.ico" sizes="any" />
+    <link rel="icon" type="image/png" sizes="32x32" href="./assets/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="./assets/favicon-16x16.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="./assets/apple-touch-icon.png" />
+    <link rel="preload" href="./assets/geist-98bbbccb.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="./assets/geist-mono-013b2f2f.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="./assets/orbitron-6406bcd4.woff2" as="font" type="font/woff2" crossorigin />
     <style data-vinext-fonts>
       /* cyrillic-ext */
       @font-face {
-        font-family: 'Geist';
+        font-family: "Geist";
         font-style: normal;
         font-weight: 100 900;
         font-display: swap;
-        src: url(./assets/_vinext_fonts/geist-8ac0455e797f/geist-ff2310f5.woff2) format('woff2');
+        src: url(./assets/geist-ff2310f5.woff2) format("woff2");
         unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
       }
       /* cyrillic */
       @font-face {
-        font-family: 'Geist';
+        font-family: "Geist";
         font-style: normal;
         font-weight: 100 900;
         font-display: swap;
-        src: url(./assets/_vinext_fonts/geist-8ac0455e797f/geist-875ccdd4.woff2) format('woff2');
+        src: url(./assets/geist-875ccdd4.woff2) format("woff2");
         unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
       }
       /* vietnamese */
       @font-face {
-        font-family: 'Geist';
+        font-family: "Geist";
         font-style: normal;
         font-weight: 100 900;
         font-display: swap;
-        src: url(./assets/_vinext_fonts/geist-8ac0455e797f/geist-52306abf.woff2) format('woff2');
-        unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+        src: url(./assets/geist-52306abf.woff2) format("woff2");
+        unicode-range:
+          U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304,
+          U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
       }
       /* latin-ext */
       @font-face {
-        font-family: 'Geist';
+        font-family: "Geist";
         font-style: normal;
         font-weight: 100 900;
         font-display: swap;
-        src: url(./assets/_vinext_fonts/geist-8ac0455e797f/geist-001175b1.woff2) format('woff2');
-        unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+        src: url(./assets/geist-001175b1.woff2) format("woff2");
+        unicode-range:
+          U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF,
+          U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
       }
       /* latin */
       @font-face {
-        font-family: 'Geist';
+        font-family: "Geist";
         font-style: normal;
         font-weight: 100 900;
         font-display: swap;
-        src: url(./assets/_vinext_fonts/geist-8ac0455e797f/geist-98bbbccb.woff2) format('woff2');
-        unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+        src: url(./assets/geist-98bbbccb.woff2) format("woff2");
+        unicode-range:
+          U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F,
+          U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
       }
       /* cyrillic-ext */
       @font-face {
-        font-family: 'Geist Mono';
+        font-family: "Geist Mono";
         font-style: normal;
         font-weight: 100 900;
         font-display: swap;
-        src: url(./assets/_vinext_fonts/geist-mono-00e989178794/geist-mono-f6b33328.woff2) format('woff2');
+        src: url(./assets/geist-mono-f6b33328.woff2) format("woff2");
         unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
       }
       /* cyrillic */
       @font-face {
-        font-family: 'Geist Mono';
+        font-family: "Geist Mono";
         font-style: normal;
         font-weight: 100 900;
         font-display: swap;
-        src: url(./assets/_vinext_fonts/geist-mono-00e989178794/geist-mono-44e03052.woff2) format('woff2');
+        src: url(./assets/geist-mono-44e03052.woff2) format("woff2");
         unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
       }
       /* symbols2 */
       @font-face {
-        font-family: 'Geist Mono';
+        font-family: "Geist Mono";
         font-style: normal;
         font-weight: 100 900;
         font-display: swap;
-        src: url(./assets/_vinext_fonts/geist-mono-00e989178794/geist-mono-0638449e.woff2) format('woff2');
+        src: url(./assets/geist-mono-0638449e.woff2) format("woff2");
         unicode-range: U+2000-2001, U+2004-2008, U+200A, U+23B8-23BD, U+2500-259F;
       }
       /* vietnamese */
       @font-face {
-        font-family: 'Geist Mono';
+        font-family: "Geist Mono";
         font-style: normal;
         font-weight: 100 900;
         font-display: swap;
-        src: url(./assets/_vinext_fonts/geist-mono-00e989178794/geist-mono-971fb274.woff2) format('woff2');
-        unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+        src: url(./assets/geist-mono-971fb274.woff2) format("woff2");
+        unicode-range:
+          U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304,
+          U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
       }
       /* latin-ext */
       @font-face {
-        font-family: 'Geist Mono';
+        font-family: "Geist Mono";
         font-style: normal;
         font-weight: 100 900;
         font-display: swap;
-        src: url(./assets/_vinext_fonts/geist-mono-00e989178794/geist-mono-44745446.woff2) format('woff2');
-        unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+        src: url(./assets/geist-mono-44745446.woff2) format("woff2");
+        unicode-range:
+          U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF,
+          U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
       }
       /* latin */
       @font-face {
-        font-family: 'Geist Mono';
+        font-family: "Geist Mono";
         font-style: normal;
         font-weight: 100 900;
         font-display: swap;
-        src: url(./assets/_vinext_fonts/geist-mono-00e989178794/geist-mono-013b2f2f.woff2) format('woff2');
-        unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+        src: url(./assets/geist-mono-013b2f2f.woff2) format("woff2");
+        unicode-range:
+          U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F,
+          U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
       }
       /* latin */
       @font-face {
-        font-family: 'Orbitron';
+        font-family: "Orbitron";
         font-style: normal;
         font-weight: 700;
         font-display: swap;
-        src: url(./assets/_vinext_fonts/orbitron-91c1bf826c93/orbitron-6406bcd4.woff2) format('woff2');
-        unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+        src: url(./assets/orbitron-6406bcd4.woff2) format("woff2");
+        unicode-range:
+          U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F,
+          U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
       }
       .fonts {
-        --font-geist-sans: 'Geist', sans-serif;
-        --font-geist-mono: 'Geist Mono', sans-serif;
-        --font-orbitron: 'Orbitron', sans-serif;
+        --font-geist-sans: "Geist", sans-serif;
+        --font-geist-mono: "Geist Mono", sans-serif;
+        --font-orbitron: "Orbitron", sans-serif;
       }
     </style>
   </head>
-  <body class="fonts antialiased"><link rel="preload" as="image" href="/media/sgu-1-render-gold.png"/><link rel="preload" as="image" href="/media/sgu-1-prototypes.jpeg"/><link rel="preload" as="image" href="/media/sgu-1-render-black.png"/><main id="top"><header class="siteHeader"><div class="shell headerInner"><a class="brand" href="#top"><span class="logo" aria-label="SGU-1"><span class="logoWord">SGU</span><span class="logoOne">1</span></span><span>Sound Generator Unit 1</span></a><nav aria-label="Primary navigation"><a href="#overview">Chip</a><a href="#hardware">Prototype</a><a href="https://github.com/X65/SGU-1" target="_blank" rel="noopener noreferrer">Soft-core <span aria-hidden="true">↗</span></a><a href="https://tracker.x65.zone/" target="_blank" rel="noopener noreferrer">Tracker <span aria-hidden="true">↗</span></a><a href="#contact">Contact</a></nav><div class="headerLifecycle"><span>Lifecycle</span><strong>Engineering prototype</strong></div></div></header><section class="catalogueHero" aria-labelledby="product-title"><div class="shell heroGrid"><div class="productIdentity"><p class="eyebrow">PROGRAMMABLE SOUND GENERATOR MODULE</p><div class="titleRow"><h1 id="product-title">SGU-1</h1><span class="revisionTag">REV 1</span></div><p class="productClaim">Nine-channel, four-operator FM synthesis with per-channel filtering, hardware modulation and PCM playback.</p><p class="productSummary">A new stereo audio-synthesis device developed for the X65 Microcomputer Project and intended for integration with modern retro computers, original vintage machines and embedded systems.</p><div class="heroActions"><a class="primaryButton" href="mailto:contact@xiaoka.com?subject=SGU-1%20product%20enquiry">Contact engineering</a><a class="secondaryButton" href="https://tracker.x65.zone/" target="_blank" rel="noopener noreferrer">Evaluate in SGU-Tracker <span aria-hidden="true">↗</span></a></div><p class="heroNotice"><strong>Development status:</strong> Revision 1 engineering samples. Not for resale.</p></div><figure class="productImage"><div class="imageStage"><img src="/media/sgu-1-render-gold.png" alt="Gold SGU-1 programmable sound generator module render"/></div><figcaption><span>SGU-1 REV 1</span><span>Component-side product render</span></figcaption></figure></div></section><section class="quickSpecs" aria-label="Key product specifications"><dl class="shell quickSpecGrid"><div><dt>Channels</dt><dd>9 stereo</dd></div><div><dt>Synthesis</dt><dd>4-op FM</dd></div><div><dt>Output</dt><dd>48 kHz I²S</dd></div><div><dt>Sample memory</dt><dd>64 kB PCM</dd></div><div><dt>Package</dt><dd>Castellated module</dd></div></dl></section><section class="catalogueSection shell" id="overview"><div class="sectionIndex"><span>01</span><p>PRODUCT OVERVIEW</p></div><div class="overviewGrid"><article class="overviewCopy"><h2>Architecture and integration</h2><p>SGU-1 combines established concepts from OPL/ESFM, OPM, SID, POKEY and Paula in one programmable device: four-operator FM synthesis, flexible operator routing, per-channel subtractive filtering and hardware sweep units.</p><p>The module pairs a microcontroller with an audio CODEC. Together they generate a stereo 48 kHz I²S stream, converted by the CODEC to analog stereo line-level output. This provides the synthesis capabilities required by X65 without depending on advanced audio chips that are no longer manufactured.</p><p>The same C soft-core implementation runs in the <a href="https://tracker.x65.zone/" target="_blank" rel="noopener noreferrer">SGU-Tracker</a> and on the castellated hardware module. Host tools and target-side players may be adapted independently; the current C and 6502 players demonstrate two integration paths.</p><aside><strong>Engineering notice</strong><span>Electrical limits, pin assignments and production specifications have not been released. Revision 1 data must not be used for production designs.</span></aside></article><div class="featurePanel"><h2>Key features</h2><section class="featureGroup"><h3>Synthesis engine</h3><ul><li>Nine channels with four operators per channel</li><li>Seven waveforms per operator, including sample playback</li><li>ESFM-style per-operator modulation and output routing</li><li>Waveform shaping and continuous signed pulse width</li><li>OPN-style AR / DR / SL / SR / RR envelopes</li></ul></section><section class="featureGroup"><h3>Modulation and control</h3><ul><li>Per-operator hard sync and ring modulation</li><li>Selectable LFO waveforms for AM and PM</li><li>Per-channel volume, frequency and cutoff sweeps</li><li>Per-channel phase-reset timer</li><li>Level-driven GATE and one-shot TRIG control</li></ul></section><section class="featureGroup"><h3>Audio path</h3><ul><li>Per-channel resonant low-pass, band-pass and high-pass filter</li><li>Stereo 48 kHz I²S output to audio CODEC</li><li>Analog stereo line-level output</li><li>64 kB dedicated PCM sample memory</li></ul></section><section class="featureGroup"><h3>System integration</h3><ul><li>Castellated module for board-level integration</li><li>SPI host interface and USB-MIDI playback</li><li>SGM module format with C and 6502 playback software</li><li>Targets modern retro, vintage and embedded systems</li></ul></section></div></div></section><section class="catalogueSection specSection" id="parameters"><div class="shell"><div class="sectionIndex"><span>02</span><p>TECHNICAL DATA</p></div><div class="sectionTitle"><h2>Product specifications</h2><p>Preliminary values for Revision 1 evaluation hardware.</p></div><div class="parameterLayout"><table class="specTable"><tbody><tr class="specGroup"><th colSpan="2">Synthesis</th></tr><tr><th scope="row">Audio channels</th><td>9</td></tr><tr><th scope="row">FM architecture</th><td>4 operators per channel</td></tr><tr><th scope="row">Operator waveforms</th><td>7, including PCM sample</td></tr><tr><th scope="row">Operator routing</th><td>Independent output and modulation-input levels</td></tr><tr><th scope="row">Envelope</th><td>AR / DR / SL / SR / RR</td></tr><tr><th scope="row">Channel filter</th><td>Resonant low-pass, band-pass and high-pass</td></tr><tr><th scope="row">Modulation</th><td>Hard sync, ring modulation, AM and PM LFO</td></tr><tr><th scope="row">Hardware sweeps</th><td>Volume, frequency and filter cutoff</td></tr><tr class="specGroup"><th colSpan="2">Audio and memory</th></tr><tr><th scope="row">Audio output</th><td>48 kHz, stereo sound</td></tr><tr><th scope="row">Signal path</th><td>I²S to analog stereo line out</td></tr><tr><th scope="row">PCM sample memory</th><td>64 kB</td></tr><tr class="specGroup"><th colSpan="2">Implementation and host interface</th></tr><tr><th scope="row">Device type</th><td>Programmable sound generator module</td></tr><tr><th scope="row">Implementation</th><td>Microcontroller and audio CODEC</td></tr><tr><th scope="row">Host integration</th><td>Castellated board-edge I/O</td></tr><tr><th scope="row">Development control</th><td>SPI, USB-MIDI</td></tr><tr><th scope="row">Reference playback</th><td>C and 6502 players for SGM modules</td></tr></tbody></table><div class="statusStack"><article class="statusCard"><div class="statusCardHead"><span>DEVICE</span><span>STATUS</span></div><div class="statusCardTitle"><div><strong>SGU-1 REV 1</strong><small>Evaluation hardware</small></div><b>NOT FOR RESALE</b></div><dl><div><dt>Availability</dt><dd>Engineering samples</dd></div><div><dt>Package</dt><dd>Castellated module</dd></div><div><dt>Production data</dt><dd>In preparation</dd></div></dl></article><article class="statusCard"><div class="statusCardHead"><span>CORE</span><span>STATUS</span></div><div class="statusCardTitle"><div><strong>SGU-1 C SOFT-CORE</strong><small>Canonical implementation</small></div><b class="available">AVAILABLE</b></div><dl><div><dt>Interface</dt><dd><a href="https://github.com/X65/SGU-1/blob/main/sgu.h" target="_blank" rel="noopener noreferrer">sgu.h <span aria-hidden="true">↗</span></a></dd></div><div><dt>Implementation</dt><dd><a href="https://github.com/X65/SGU-1/blob/main/sgu.c" target="_blank" rel="noopener noreferrer">sgu.c <span aria-hidden="true">↗</span></a></dd></div><div><dt>Hardware path</dt><dd>VHDL design reference</dd></div></dl></article><article class="enquiryCard"><span>ENGINEERING &amp; SALES</span><h3>Need samples or integration information?</h3><p>Technical and commercial enquiries, orders, quotations and invoicing.</p><a href="mailto:contact@xiaoka.com?subject=SGU-1%20product%20enquiry">contact@xiaoka.com <span aria-hidden="true">↗</span></a></article></div></div></div></section><section class="catalogueSection shell demoSection" aria-labelledby="demo-title"><div class="sectionIndex"><span>03</span><p>AUDIO EVALUATION</p></div><div class="demoGrid"><div class="demoCopy"><h2 id="demo-title">Listen to SGU-1</h2><p>Recorded demonstrations of the synthesis engine, starting from playlist item 9. Playback begins muted where browser policy requires it.</p><a href="https://tracker.x65.zone/" target="_blank" rel="noopener noreferrer">Open the interactive SGU-Tracker <span aria-hidden="true">↗</span></a></div><div class="videoFrame"><iframe src="https://www.youtube.com/embed/jBhUl498EfY?list=PLbSCQdOP-_xh-mkkLIiCdmu_ArqHcOkYM&amp;index=9&amp;autoplay=1&amp;mute=1&amp;loop=1&amp;playsinline=1" title="SGU-1 sound demonstration playlist" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerPolicy="strict-origin-when-cross-origin" allowFullScreen=""></iframe></div></div></section><section class="catalogueSection resourceSection" id="documentation"><div class="shell"><div class="sectionIndex"><span>04</span><p>DESIGN RESOURCES</p></div><div class="sectionTitle"><h2>Documentation and tools</h2><p>Current release status for engineering resources.</p></div><div class="resourceTable" role="table" aria-label="SGU-1 documentation status"><div class="resourceHead" role="row"><span role="columnheader">Resource</span><span role="columnheader">Description</span><span role="columnheader">Status / action</span></div><div class="resourceRow" role="row"><strong role="cell">Product brief</strong><span role="cell">Architecture and system integration overview</span><b role="cell">IN PREPARATION</b></div><div class="resourceRow" role="row"><strong role="cell">Register reference</strong><span role="cell">Host control, synthesis and status register definitions</span><b role="cell"><a href="https://tinyurl.com/x65-memory-map" target="_blank" rel="noopener noreferrer">IN DEVELOPMENT <span aria-hidden="true">↗</span></a></b></div><div class="resourceRow" role="row"><strong role="cell">Gate and trigger behavior</strong><span role="cell">Level-driven GATE and one-shot TRIG semantics</span><b role="cell">IN DEVELOPMENT</b></div><div class="resourceRow" role="row"><strong role="cell">Hardware design files</strong><span role="cell">Module footprint, pin assignment and reference design</span><b role="cell">PLANNED</b></div><div class="resourceRow" role="row"><strong role="cell">SGU-Tracker</strong><span role="cell">Online instrument editor, sequencer and playback environment</span><b role="cell"><a href="https://tracker.x65.zone/" target="_blank" rel="noopener noreferrer">OPEN TRACKER <span aria-hidden="true">↗</span></a></b></div><div class="resourceRow" role="row"><strong role="cell">Soft-core source</strong><span role="cell">Shared C implementation used by the tracker and module</span><b role="cell"><a href="https://github.com/X65/SGU-1" target="_blank" rel="noopener noreferrer">VIEW SOURCE <span aria-hidden="true">↗</span></a></b></div></div></div></section><section class="catalogueSection hardwareSection" id="hardware"><div class="shell"><div class="sectionIndex light"><span>05</span><p>EVALUATION HARDWARE</p></div><div class="sectionTitle light"><h2>Revision 1 prototype</h2><p>Assembled engineering modules and component-side study.</p></div><div class="hardwareGrid"><figure><img src="/media/sgu-1-prototypes.jpeg" alt="Three assembled SGU-1 prototype boards beside a match for scale"/><figcaption><strong>REV 1 prototype batch</strong><span>Assembled modules shown with a match for scale</span></figcaption></figure><figure class="blackBoard"><img src="/media/sgu-1-render-black.png" alt="Black and gold SGU-1 module component-side render"/><figcaption><strong>Component-side study</strong><span>Castellated module form factor</span></figcaption></figure></div></div></section><footer id="contact"><div class="shell footerGrid"><div><span class="logo" aria-label="SGU-1"><span class="logoWord">SGU</span><span class="logoOne">1</span></span><p>Programmable Sound Generator Module</p></div><div class="footerContact"><span>CONTACT</span><p>Technical and commercial enquiries, orders, quotations and invoicing</p><a href="mailto:contact@xiaoka.com">contact@xiaoka.com</a></div><div class="footerLinks"><a href="https://x65.zone/" target="_blank" rel="noopener noreferrer">X65 Project <span aria-hidden="true">↗</span></a><a href="https://github.com/X65/SGU-1" target="_blank" rel="noopener noreferrer">Source <span aria-hidden="true">↗</span></a><a href="#top">Back to top ↑</a></div></div></footer></main></body>
+  <body class="fonts antialiased">
+    <main id="top">
+      <header class="siteHeader">
+        <div class="shell headerInner">
+          <a class="brand" href="#top"
+            ><span class="logo" aria-label="SGU-1"><span class="logoWord">SGU</span><span class="logoOne">1</span></span
+            ><span>Sound Generator Unit 1</span></a
+          >
+          <nav aria-label="Primary navigation">
+            <a href="#overview">Chip</a><a href="#hardware">Prototype</a
+            ><a href="https://github.com/X65/SGU-1" target="_blank" rel="noopener noreferrer"
+              >Soft-core <span aria-hidden="true">↗</span></a
+            ><a href="https://tracker.x65.zone/" target="_blank" rel="noopener noreferrer"
+              >Tracker <span aria-hidden="true">↗</span></a
+            ><a href="#contact">Contact</a>
+          </nav>
+          <div class="headerLifecycle"><span>Lifecycle</span><strong>Engineering prototype</strong></div>
+        </div>
+      </header>
+      <section class="catalogueHero" aria-labelledby="product-title">
+        <div class="shell heroGrid">
+          <div class="productIdentity">
+            <p class="eyebrow">PROGRAMMABLE SOUND GENERATOR MODULE</p>
+            <div class="titleRow">
+              <h1 id="product-title">SGU-1</h1>
+              <span class="revisionTag">REV 1</span>
+            </div>
+            <p class="productClaim">
+              Nine-channel, four-operator FM synthesis with per-channel filtering, hardware modulation and PCM playback.
+            </p>
+            <p class="productSummary">
+              A new stereo audio-synthesis device developed for the X65 Microcomputer Project and intended for
+              integration with modern retro computers, original vintage machines and embedded systems.
+            </p>
+            <div class="heroActions">
+              <a class="primaryButton" href="mailto:contact@xiaoka.com?subject=SGU-1%20product%20enquiry"
+                >Contact engineering</a
+              ><a class="secondaryButton" href="https://tracker.x65.zone/" target="_blank" rel="noopener noreferrer"
+                >Evaluate in SGU-Tracker <span aria-hidden="true">↗</span></a
+              >
+            </div>
+            <p class="heroNotice">
+              <strong>Development status:</strong> Revision 1 engineering samples. Not for resale.
+            </p>
+          </div>
+          <figure class="productImage">
+            <div class="imageStage">
+              <img src="./media/sgu-1-render-gold.png" alt="Gold SGU-1 programmable sound generator module render" />
+            </div>
+            <figcaption><span>SGU-1 REV 1</span><span>Component-side product render</span></figcaption>
+          </figure>
+        </div>
+      </section>
+      <section class="quickSpecs" aria-label="Key product specifications">
+        <dl class="shell quickSpecGrid">
+          <div>
+            <dt>Channels</dt>
+            <dd>9 stereo</dd>
+          </div>
+          <div>
+            <dt>Synthesis</dt>
+            <dd>4-op FM</dd>
+          </div>
+          <div>
+            <dt>Output</dt>
+            <dd>48 kHz I²S</dd>
+          </div>
+          <div>
+            <dt>Sample memory</dt>
+            <dd>64 kB PCM</dd>
+          </div>
+          <div>
+            <dt>Package</dt>
+            <dd>Castellated module</dd>
+          </div>
+        </dl>
+      </section>
+      <section class="catalogueSection shell" id="overview">
+        <div class="sectionIndex">
+          <span>01</span>
+          <p>PRODUCT OVERVIEW</p>
+        </div>
+        <div class="overviewGrid">
+          <article class="overviewCopy">
+            <h2>Architecture and integration</h2>
+            <p>
+              SGU-1 combines established concepts from OPL/ESFM, OPM, SID, POKEY and Paula in one programmable device:
+              four-operator FM synthesis, flexible operator routing, per-channel subtractive filtering and hardware
+              sweep units.
+            </p>
+            <p>
+              The module pairs a microcontroller with an audio CODEC. Together they generate a stereo 48 kHz I²S stream,
+              converted by the CODEC to analog stereo line-level output. This provides the synthesis capabilities
+              required by X65 without depending on advanced audio chips that are no longer manufactured.
+            </p>
+            <p>
+              The same C soft-core implementation runs in the
+              <a href="https://tracker.x65.zone/" target="_blank" rel="noopener noreferrer">SGU-Tracker</a> and on the
+              castellated hardware module. Host tools and target-side players may be adapted independently; the current
+              C and 6502 players demonstrate two integration paths.
+            </p>
+            <aside>
+              <strong>Engineering notice</strong
+              ><span
+                >Electrical limits, pin assignments and production specifications have not been released. Revision 1
+                data must not be used for production designs.</span
+              >
+            </aside>
+          </article>
+          <div class="featurePanel">
+            <h2>Key features</h2>
+            <section class="featureGroup">
+              <h3>Synthesis engine</h3>
+              <ul>
+                <li>Nine channels with four operators per channel</li>
+                <li>Seven waveforms per operator, including sample playback</li>
+                <li>ESFM-style per-operator modulation and output routing</li>
+                <li>Waveform shaping and continuous signed pulse width</li>
+                <li>OPN-style AR / DR / SL / SR / RR envelopes</li>
+              </ul>
+            </section>
+            <section class="featureGroup">
+              <h3>Modulation and control</h3>
+              <ul>
+                <li>Per-operator hard sync and ring modulation</li>
+                <li>Selectable LFO waveforms for AM and PM</li>
+                <li>Per-channel volume, frequency and cutoff sweeps</li>
+                <li>Per-channel phase-reset timer</li>
+                <li>Level-driven GATE and one-shot TRIG control</li>
+              </ul>
+            </section>
+            <section class="featureGroup">
+              <h3>Audio path</h3>
+              <ul>
+                <li>Per-channel resonant low-pass, band-pass and high-pass filter</li>
+                <li>Stereo 48 kHz I²S output to audio CODEC</li>
+                <li>Analog stereo line-level output</li>
+                <li>64 kB dedicated PCM sample memory</li>
+              </ul>
+            </section>
+            <section class="featureGroup">
+              <h3>System integration</h3>
+              <ul>
+                <li>Castellated module for board-level integration</li>
+                <li>SPI host interface and USB-MIDI playback</li>
+                <li>SGM module format with C and 6502 playback software</li>
+                <li>Targets modern retro, vintage and embedded systems</li>
+              </ul>
+            </section>
+          </div>
+        </div>
+      </section>
+      <section class="catalogueSection specSection" id="parameters">
+        <div class="shell">
+          <div class="sectionIndex">
+            <span>02</span>
+            <p>TECHNICAL DATA</p>
+          </div>
+          <div class="sectionTitle">
+            <h2>Product specifications</h2>
+            <p>Preliminary values for Revision 1 evaluation hardware.</p>
+          </div>
+          <div class="parameterLayout">
+            <table class="specTable">
+              <tbody>
+                <tr class="specGroup">
+                  <th colspan="2">Synthesis</th>
+                </tr>
+                <tr>
+                  <th scope="row">Audio channels</th>
+                  <td>9</td>
+                </tr>
+                <tr>
+                  <th scope="row">FM architecture</th>
+                  <td>4 operators per channel</td>
+                </tr>
+                <tr>
+                  <th scope="row">Operator waveforms</th>
+                  <td>7, including PCM sample</td>
+                </tr>
+                <tr>
+                  <th scope="row">Operator routing</th>
+                  <td>Independent output and modulation-input levels</td>
+                </tr>
+                <tr>
+                  <th scope="row">Envelope</th>
+                  <td>AR / DR / SL / SR / RR</td>
+                </tr>
+                <tr>
+                  <th scope="row">Channel filter</th>
+                  <td>Resonant low-pass, band-pass and high-pass</td>
+                </tr>
+                <tr>
+                  <th scope="row">Modulation</th>
+                  <td>Hard sync, ring modulation, AM and PM LFO</td>
+                </tr>
+                <tr>
+                  <th scope="row">Hardware sweeps</th>
+                  <td>Volume, frequency and filter cutoff</td>
+                </tr>
+                <tr class="specGroup">
+                  <th colspan="2">Audio and memory</th>
+                </tr>
+                <tr>
+                  <th scope="row">Audio output</th>
+                  <td>48 kHz, stereo sound</td>
+                </tr>
+                <tr>
+                  <th scope="row">Signal path</th>
+                  <td>I²S to analog stereo line out</td>
+                </tr>
+                <tr>
+                  <th scope="row">PCM sample memory</th>
+                  <td>64 kB</td>
+                </tr>
+                <tr class="specGroup">
+                  <th colspan="2">Implementation and host interface</th>
+                </tr>
+                <tr>
+                  <th scope="row">Device type</th>
+                  <td>Programmable sound generator module</td>
+                </tr>
+                <tr>
+                  <th scope="row">Implementation</th>
+                  <td>Microcontroller and audio CODEC</td>
+                </tr>
+                <tr>
+                  <th scope="row">Host integration</th>
+                  <td>Castellated board-edge I/O</td>
+                </tr>
+                <tr>
+                  <th scope="row">Development control</th>
+                  <td>SPI, USB-MIDI</td>
+                </tr>
+                <tr>
+                  <th scope="row">Reference playback</th>
+                  <td>C and 6502 players for SGM modules</td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="statusStack">
+              <article class="statusCard">
+                <div class="statusCardHead"><span>DEVICE</span><span>STATUS</span></div>
+                <div class="statusCardTitle">
+                  <div><strong>SGU-1 REV 1</strong><small>Evaluation hardware</small></div>
+                  <b>NOT FOR RESALE</b>
+                </div>
+                <dl>
+                  <div>
+                    <dt>Availability</dt>
+                    <dd>Engineering samples</dd>
+                  </div>
+                  <div>
+                    <dt>Package</dt>
+                    <dd>Castellated module</dd>
+                  </div>
+                  <div>
+                    <dt>Production data</dt>
+                    <dd>In preparation</dd>
+                  </div>
+                </dl>
+              </article>
+              <article class="statusCard">
+                <div class="statusCardHead"><span>CORE</span><span>STATUS</span></div>
+                <div class="statusCardTitle">
+                  <div><strong>SGU-1 C SOFT-CORE</strong><small>Canonical implementation</small></div>
+                  <b class="available">AVAILABLE</b>
+                </div>
+                <dl>
+                  <div>
+                    <dt>Interface</dt>
+                    <dd>
+                      <a href="https://github.com/X65/SGU-1/blob/main/sgu.h" target="_blank" rel="noopener noreferrer"
+                        >sgu.h <span aria-hidden="true">↗</span></a
+                      >
+                    </dd>
+                  </div>
+                  <div>
+                    <dt>Implementation</dt>
+                    <dd>
+                      <a href="https://github.com/X65/SGU-1/blob/main/sgu.c" target="_blank" rel="noopener noreferrer"
+                        >sgu.c <span aria-hidden="true">↗</span></a
+                      >
+                    </dd>
+                  </div>
+                  <div>
+                    <dt>Hardware path</dt>
+                    <dd>VHDL design reference</dd>
+                  </div>
+                </dl>
+              </article>
+              <article class="enquiryCard">
+                <span>ENGINEERING &amp; SALES</span>
+                <h3>Need samples or integration information?</h3>
+                <p>Technical and commercial enquiries, orders, quotations and invoicing.</p>
+                <a href="mailto:contact@xiaoka.com?subject=SGU-1%20product%20enquiry"
+                  >contact@xiaoka.com <span aria-hidden="true">↗</span></a
+                >
+              </article>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="catalogueSection shell demoSection" aria-labelledby="demo-title">
+        <div class="sectionIndex">
+          <span>03</span>
+          <p>AUDIO EVALUATION</p>
+        </div>
+        <div class="demoGrid">
+          <div class="demoCopy">
+            <h2 id="demo-title">Listen to SGU-1</h2>
+            <p>
+              Recorded demonstrations of the synthesis engine, starting from playlist item 9. Playback begins muted
+              where browser policy requires it.
+            </p>
+            <a href="https://tracker.x65.zone/" target="_blank" rel="noopener noreferrer"
+              >Open the interactive SGU-Tracker <span aria-hidden="true">↗</span></a
+            >
+          </div>
+          <div class="videoFrame">
+            <iframe
+              src="https://www.youtube.com/embed/jBhUl498EfY?list=PLbSCQdOP-_xh-mkkLIiCdmu_ArqHcOkYM&amp;index=9&amp;autoplay=1&amp;mute=1&amp;loop=1&amp;playsinline=1"
+              title="SGU-1 sound demonstration playlist"
+              allow="
+                accelerometer;
+                autoplay;
+                clipboard-write;
+                encrypted-media;
+                gyroscope;
+                picture-in-picture;
+                web-share;
+              "
+              referrerpolicy="strict-origin-when-cross-origin"
+              allowfullscreen
+            ></iframe>
+          </div>
+        </div>
+      </section>
+      <section class="catalogueSection resourceSection" id="documentation">
+        <div class="shell">
+          <div class="sectionIndex">
+            <span>04</span>
+            <p>DESIGN RESOURCES</p>
+          </div>
+          <div class="sectionTitle">
+            <h2>Documentation and tools</h2>
+            <p>Current release status for engineering resources.</p>
+          </div>
+          <div class="resourceTable" role="table" aria-label="SGU-1 documentation status">
+            <div class="resourceHead" role="row">
+              <span role="columnheader">Resource</span><span role="columnheader">Description</span
+              ><span role="columnheader">Status / action</span>
+            </div>
+            <div class="resourceRow" role="row">
+              <strong role="cell">Product brief</strong
+              ><span role="cell">Architecture and system integration overview</span><b role="cell">IN PREPARATION</b>
+            </div>
+            <div class="resourceRow" role="row">
+              <strong role="cell">Register reference</strong
+              ><span role="cell">Host control, synthesis and status register definitions</span
+              ><b role="cell"
+                ><a href="https://tinyurl.com/x65-memory-map" target="_blank" rel="noopener noreferrer"
+                  >IN DEVELOPMENT <span aria-hidden="true">↗</span></a
+                ></b
+              >
+            </div>
+            <div class="resourceRow" role="row">
+              <strong role="cell">Gate and trigger behavior</strong
+              ><span role="cell">Level-driven GATE and one-shot TRIG semantics</span><b role="cell">IN DEVELOPMENT</b>
+            </div>
+            <div class="resourceRow" role="row">
+              <strong role="cell">Hardware design files</strong
+              ><span role="cell">Module footprint, pin assignment and reference design</span><b role="cell">PLANNED</b>
+            </div>
+            <div class="resourceRow" role="row">
+              <strong role="cell">SGU-Tracker</strong
+              ><span role="cell">Online instrument editor, sequencer and playback environment</span
+              ><b role="cell"
+                ><a href="https://tracker.x65.zone/" target="_blank" rel="noopener noreferrer"
+                  >OPEN TRACKER <span aria-hidden="true">↗</span></a
+                ></b
+              >
+            </div>
+            <div class="resourceRow" role="row">
+              <strong role="cell">Soft-core source</strong
+              ><span role="cell">Shared C implementation used by the tracker and module</span
+              ><b role="cell"
+                ><a href="https://github.com/X65/SGU-1" target="_blank" rel="noopener noreferrer"
+                  >VIEW SOURCE <span aria-hidden="true">↗</span></a
+                ></b
+              >
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="catalogueSection hardwareSection" id="hardware">
+        <div class="shell">
+          <div class="sectionIndex light">
+            <span>05</span>
+            <p>EVALUATION HARDWARE</p>
+          </div>
+          <div class="sectionTitle light">
+            <h2>Revision 1 prototype</h2>
+            <p>Assembled engineering modules and component-side study.</p>
+          </div>
+          <div class="hardwareGrid">
+            <figure>
+              <img
+                src="./media/sgu-1-prototypes.jpeg"
+                alt="Three assembled SGU-1 prototype boards beside a match for scale"
+              />
+              <figcaption>
+                <strong>REV 1 prototype batch</strong><span>Assembled modules shown with a match for scale</span>
+              </figcaption>
+            </figure>
+            <figure class="blackBoard">
+              <img src="./media/sgu-1-render-black.png" alt="Black and gold SGU-1 module component-side render" />
+              <figcaption><strong>Component-side study</strong><span>Castellated module form factor</span></figcaption>
+            </figure>
+          </div>
+        </div>
+      </section>
+      <footer id="contact">
+        <div class="shell footerGrid">
+          <div>
+            <span class="logo" aria-label="SGU-1"><span class="logoWord">SGU</span><span class="logoOne">1</span></span>
+            <p>Programmable Sound Generator Module</p>
+          </div>
+          <div class="footerContact">
+            <span>CONTACT</span>
+            <p>Technical and commercial enquiries, orders, quotations and invoicing</p>
+            <a href="mailto:contact@xiaoka.com">contact@xiaoka.com</a>
+          </div>
+          <div class="footerLinks">
+            <a href="https://x65.zone/" target="_blank" rel="noopener noreferrer"
+              >X65 Project <span aria-hidden="true">↗</span></a
+            ><a href="https://github.com/X65/SGU-1" target="_blank" rel="noopener noreferrer"
+              >Source <span aria-hidden="true">↗</span></a
+            ><a href="#top">Back to top ↑</a>
+          </div>
+        </div>
+      </footer>
+    </main>
+  </body>
 </html>
