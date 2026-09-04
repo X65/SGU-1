@@ -18,7 +18,7 @@
 
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; background: var(--surface); }
-body { margin: 0; color: var(--ink); background: var(--surface); font-family: var(--font-geist-sans), Arial, sans-serif; font-size: 16px; }
+body { margin: 0; color: var(--ink); font-family: var(--font-geist-sans), Arial, sans-serif; font-size: 16px; }
 a { color: inherit; text-decoration: none; }
 img { display: block; max-width: 100%; }
 figure, dl, p { margin: 0; }
@@ -32,7 +32,7 @@ figure, dl, p { margin: 0; }
 .brand > span:last-child { color: #bfc0b9; font: 550 11px/1 var(--mono); letter-spacing: .015em; }
 .logo { display: inline-flex; align-items: baseline; color: var(--logo-gold); font-family: var(--font-orbitron), sans-serif; font-size: 36px; font-weight: 700; line-height: .82; white-space: nowrap; }
 .logoWord { font-style: italic; letter-spacing: .025em; }
-.logoOne { margin-left: .09em; color: inherit; font-size: 58.3333%; font-style: normal; font-weight: 700; line-height: .82; letter-spacing: 0; -webkit-text-stroke: 0 transparent; }
+.logoOne { margin-left: .09em; font-size: 58.3333%; font-style: normal; letter-spacing: 0; }
 nav { display: flex; justify-content: center; align-items: center; gap: 30px; }
 nav a { color: #d8d9d4; font-size: 14px; font-weight: 650; white-space: nowrap; }
 nav a:hover { color: var(--yellow); }
@@ -52,7 +52,7 @@ h1 { margin: 0; color: var(--black); font-size: clamp(54px, 6vw, 82px); font-wei
 .heroActions { display: flex; gap: 10px; margin-top: 30px; }
 .primaryButton, .secondaryButton { min-height: 42px; display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 0 17px; border: 1px solid var(--black); font-size: 13px; font-weight: 750; }
 .primaryButton { color: var(--black); background: var(--yellow); }
-.secondaryButton { color: var(--black); background: #fff; }
+.secondaryButton { color: var(--black); background: var(--surface); }
 .primaryButton:hover { background: var(--yellow-hover); }
 .secondaryButton:hover { color: var(--yellow); background: var(--black); }
 .heroNotice { margin-top: 26px; padding-left: 13px; border-left: 3px solid var(--green); color: var(--muted); font: 550 12px/1.5 var(--mono); }
@@ -67,7 +67,7 @@ h1 { margin: 0; color: var(--black); font-size: clamp(54px, 6vw, 82px); font-wei
 .quickSpecGrid div { min-height: 88px; display: grid; align-content: center; padding: 0 22px; border-left: 1px solid var(--line-dark); }
 .quickSpecGrid div:last-child { border-right: 1px solid var(--line-dark); }
 .quickSpecGrid dt { color: #9da096; font: 650 10px var(--mono); text-transform: uppercase; letter-spacing: .075em; }
-.quickSpecGrid dd { margin-top: 7px; color: #fff; font-size: 15px; font-weight: 700; }
+.quickSpecGrid dd { margin-top: 7px; font-size: 15px; font-weight: 700; }
 
 .catalogueSection { padding-block: 78px 86px; scroll-margin-top: 110px; }
 .sectionIndex { height: 28px; display: flex; align-items: center; gap: 12px; margin-bottom: 28px; border-bottom: 1px solid var(--line); }
@@ -97,13 +97,13 @@ h1 { margin: 0; color: var(--black); font-size: clamp(54px, 6vw, 82px); font-wei
 
 .specSection { background: var(--soft); border-block: 1px solid var(--line); }
 .parameterLayout { display: grid; grid-template-columns: 1fr 370px; gap: 38px; align-items: start; }
-.specTable { width: 100%; border-collapse: collapse; border: 1px solid #cfd0ca; background: #fff; font-size: 13px; }
+.specTable { width: 100%; border-collapse: collapse; border: 1px solid #cfd0ca; background: var(--surface); font-size: 13px; }
 .specTable th, .specTable td { padding: 11px 16px; border-bottom: 1px solid #e2e3de; text-align: left; vertical-align: top; }
 .specTable tr:not(.specGroup) th { width: 39%; color: #55574f; font-weight: 550; }
 .specTable td { color: var(--black); font-weight: 650; }
 .specTable .specGroup th { padding: 10px 16px; color: #fff; background: var(--matte); border-color: var(--matte); font: 750 11px var(--mono); letter-spacing: .06em; text-transform: uppercase; }
 .statusStack { display: grid; gap: 18px; }
-.statusCard { border: 1px solid #cfd0ca; background: #fff; }
+.statusCard { border: 1px solid #cfd0ca; background: var(--surface); }
 .statusCardHead { height: 38px; display: flex; justify-content: space-between; align-items: center; padding: 0 15px; color: var(--black); background: var(--yellow); font: 800 10px var(--mono); letter-spacing: .075em; }
 .statusCardTitle { min-height: 78px; display: grid; grid-template-columns: 1fr auto; align-items: start; gap: 14px; padding: 18px 15px 14px; border-bottom: 1px solid #e1e2dd; }
 .statusCardTitle strong, .statusCardTitle small { display: block; }
@@ -122,7 +122,7 @@ h1 { margin: 0; color: var(--black); font-size: clamp(54px, 6vw, 82px); font-wei
 .enquiryCard p { margin-top: 10px; color: #c4c6bf; font-size: 12px; line-height: 1.55; }
 .enquiryCard a { display: inline-block; margin-top: 15px; color: var(--yellow); font: 750 12px var(--mono); text-decoration: underline; text-underline-offset: 4px; }
 
-.demoSection { background: #fff; }
+.demoSection { background: var(--surface); }
 .demoGrid { display: grid; grid-template-columns: 300px 1fr; gap: 54px; align-items: start; }
 .demoCopy p { margin-top: 18px; color: var(--muted); font-size: 14px; line-height: 1.65; }
 .demoCopy a { display: inline-block; margin-top: 22px; color: var(--black); font-size: 13px; font-weight: 750; text-decoration: underline; text-decoration-color: var(--yellow); text-decoration-thickness: 3px; text-underline-offset: 4px; }
@@ -130,7 +130,7 @@ h1 { margin: 0; color: var(--black); font-size: clamp(54px, 6vw, 82px); font-wei
 .videoFrame iframe { display: block; width: 100%; height: 100%; border: 0; }
 
 .resourceSection { background: var(--soft); border-top: 1px solid var(--line); }
-.resourceTable { border: 1px solid #cacbc5; background: #fff; }
+.resourceTable { border: 1px solid #cacbc5; background: var(--surface); }
 .resourceHead, .resourceRow { display: grid; grid-template-columns: .75fr 1.55fr .55fr; gap: 28px; align-items: center; padding: 14px 18px; }
 .resourceHead { color: #fff; background: var(--matte); font: 750 10px var(--mono); text-transform: uppercase; letter-spacing: .07em; }
 .resourceRow { min-height: 60px; border-top: 1px solid #e1e2dd; font-size: 13px; }
