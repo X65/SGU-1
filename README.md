@@ -14,7 +14,7 @@ The module pairs a microcontroller with an audio CODEC. The synthesis engine pro
 
 - 9 channels of 4-operator FM synthesis
 - Stereo 48 kHz audio output
-- 8 waveforms per operator: sine, triangle, sawtooth, pulse, noise, periodic noise, reserved, and sample
+- 7 waveforms per operator: sine, triangle, sawtooth, pulse, noise, periodic noise, and sample
 - Per-operator waveform shaping through WPAR
 - ESFM-style routing with independent output and modulation-input levels
 - Per-operator hard sync and ring modulation
