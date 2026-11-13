@@ -62,6 +62,10 @@ access the channel selected by `CHANNEL_SELECT`; multi-byte values are little-en
 Each channel has four operators with the same eight-register layout. The table below
 describes Operator 0 at `$FEC0`–`$FEC7`; Operators 1–3 mirror its R0–R7 layout.
 
+In ratio mode (`FIX=0`), SGU uses OPM/OPN multiplier semantics: `MUL=0` selects
+×0.5 and `MUL=1..15` selects ×1..×15. When importing an OPL patch, translate
+its `MUL` codes 11→10, 13→12 and 14→15 to preserve the original frequency ratios.
+
 | Address | Register | Bit layout / value | Description |
 | --- | --- | --- | --- |
 | `$FEC0` | `OP0_R0` | `[7] TRM`, `[6] VIB`, `[5:4] KSR`, `[3:0] MUL` | Operator tremolo/vibrato enables, 2-bit key scaling, and frequency multiplier (`0` = 0.5x; `1`–`15` = 1x–15x). |

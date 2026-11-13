@@ -34,7 +34,7 @@
  *   (phase modulation from previous operator, with feedback on operator 0)
  *   and per-operator OUT (direct contribution to the voice mix).
  * - One base pitch per channel. Operator pitch is derived from channel pitch
- *   using OPL-style MUL plus per-operator DT detune.
+ *   using OPM/OPN MUL (0=0.5x, 1..15=1x..15x) plus per-operator DT detune.
  * - Optional per-operator fixed-frequency mode (OPZ-like) enabled by a flag;
  *   fixed frequency is selected by reinterpreting existing MUL+DT fields.
  * - Per-operator level and timbre controls: TL attenuation with
@@ -157,7 +157,7 @@
   For better percussive envelope shaping.
 - TL is 7-bit (0..127) vs OPL's 6-bit (0..63), for finer attenuation steps.
 - KSR is 2-bit (0..3) vs OPL's 1-bit (0/1), for better rate scaling.
-- MUL is OPL-style (0=0.5x, 1..15=1x..15x) vs OPN/OPM's (1..16=1x..16x).
+- MUL follows OPM/OPN: 0=0.5x and 1..15=1x..15x, with no OPL aliases.
 - DT is 3-bit (0..7) vs OPL's 2-bit (0..3), for finer detune steps.
 - SR (D2R) is explicit 5-bit (0..31) vs OPL's implicit (0 or 15).
 - WAVE selection is per-operator (3-bit) vs OPL's global per-channel (2-bit).
@@ -188,7 +188,8 @@ Let channel base frequency be `f_ch` (from channel FREQ).
 ### Ratio mode (FIX=0)
 
 * `f_op = f_ch * mul(MUL) + detune(DT)`
-* `MUL` uses OPL semantics (0 => 0.5×, 1..15 => 1×..15×).
+* `MUL` follows OPM/OPN: 0 => 0.5×, 1..15 => 1×..15×, with no aliases.
+* To preserve imported OPL ratios, translate MUL codes 11→10, 13→12 and 14→15.
 * `DT` is per-operator detune (3 bits) based on keycode.
 
 ### Fixed mode (FIX=1, OPZ-like)
@@ -500,7 +501,7 @@ struct SGU_OP
     // R0: [7]TRM [6]VIB [5:4]KSR [3:0]MUL
     // - TRM/VIB enable LFO AM/PM (depth set in R6).
     // - KSR selects rate-scaling strength (2-bit).
-    // - MUL is OPL-style multiplier (0 => 0.5×, 1..15 => 1×..15×).
+    // - MUL follows OPM/OPN (0 => 0.5×, 1..15 => 1×..15×).
     uint8_t reg0;
 
     // R1: [7:6]KSL [5:0]TL

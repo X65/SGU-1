@@ -27,6 +27,9 @@ void test_pcm(struct TestChip *chip, unsigned address, int value) {
     chip->pcm[address] = value;
 }
 unsigned test_flags(struct TestChip *chip) { return SGU_GetFlags(&chip->core); }
+uint32_t test_phase(struct TestChip *chip, unsigned channel, unsigned operator) {
+    return chip->core.m_channel[channel].op[operator].phase;
+}
 void test_filter_peaks(struct TestChip *chip, int64_t *output) {
     for (unsigned i = 0; i < 3; ++i) output[i] = chip->filter_peaks[i];
 }

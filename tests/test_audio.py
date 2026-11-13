@@ -3,7 +3,7 @@ import pytest
 from sgu_testkit import (
     SAMPLE_RATE, FLAGS0, CUTOFF, RESON, FULL_SCALE, frequency_word,
     represented_hz, estimate_frequency, sine_residual, rms_dbfs, band_dbfs,
-    tick_indices,
+    tick_indices, estimate_spectral_peak,
 )
 
 pytestmark = pytest.mark.audio
@@ -109,6 +109,13 @@ def test_frequency_measurement_calibration(hz):
     t = np.arange(48000) / SAMPLE_RATE
     x = 3000 * np.sin(2 * np.pi * hz * t + 0.73)
     assert estimate_frequency(x) == pytest.approx(hz, abs=0.01)
+
+
+@pytest.mark.parametrize("hz", [27.5, 440.13, 14999.81, 23984.7])
+def test_spectral_pitch_measurement_calibration(hz):
+    t = np.arange(SAMPLE_RATE) / SAMPLE_RATE
+    x = 100 + 3000 * np.sin(2 * np.pi * hz * t + 0.73)
+    assert estimate_spectral_peak(x) == pytest.approx(hz, abs=0.5)
 
 
 def test_tick_detector_detects_injected_impulse():

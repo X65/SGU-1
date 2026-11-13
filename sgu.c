@@ -267,19 +267,6 @@ static inline uint32_t compute_eg_sustain(uint8_t op_reg[])
     return eg_sustain;
 }
 
-//-------------------------------------------------
-//  compute_multiplier - compute the x.1 multiplier value
-//  from the raw 4-bit multiple register value
-//-------------------------------------------------
-static inline uint32_t compute_multiplier(uint32_t mul)
-{
-    // output values are x2 of OPL's x.1 domain:
-    // {0,1,2,3,4,5,6,7,8,9,10,10,12,12,15,15} * 2, with 0->1.
-    static const uint8_t s_multiplier_table[16] = {
-        1, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 20, 24, 24, 30, 30};
-    return s_multiplier_table[mul & 0x0F];
-}
-
 static inline uint16_t compute_fixed_base_freq16(uint32_t mul)
 {
     // base = 8 + (mul * 247 + 7) / 15 for mul 0..15
@@ -308,8 +295,10 @@ static inline uint32_t sgu_compute_phase_step_from_base(uint32_t phase_step, uin
     if (adjusted_step < 0)
         adjusted_step = 0;
 
-    // Apply frequency multiplier (which is an x.1 value)
-    return ((uint32_t)adjusted_step * multiplier) >> 1;
+    // OPM/OPN MUL: 0 is half rate; 1..15 are integer ratios. Multiply directly so
+    // only full-cycle phase wrap discards bits, not an intermediate doubling.
+    return multiplier ? (uint32_t)adjusted_step * multiplier
+                      : (uint32_t)adjusted_step >> 1;
 }
 
 // helper to apply KSR to the raw ADSR rate, ignoring ksr if the
@@ -606,7 +595,7 @@ static inline void clock_phase(struct sgu_ch_state *self, uint8_t op, uint8_t op
         // normal mode: compute phase step from channel frequency
         phase_step = sgu_compute_phase_step_from_base(ratio_base_step,
                                                       ch_keycode,
-                                                      compute_multiplier(base),
+                                                      base,
                                                       scale);
     }
 

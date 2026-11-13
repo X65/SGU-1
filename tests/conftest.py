@@ -39,6 +39,7 @@ def native(tmp_path_factory):
         unsigned test_read(struct TestChip *, unsigned, unsigned);
         void test_pcm(struct TestChip *, unsigned, int);
         unsigned test_flags(struct TestChip *);
+        uint32_t test_phase(struct TestChip *, unsigned, unsigned);
         void test_filter_peaks(struct TestChip *, int64_t *);
         void test_render(struct TestChip *, unsigned, unsigned, int, int32_t *);
     """)

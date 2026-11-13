@@ -39,7 +39,9 @@ suite, prompting removal of the marker. They are not approved golden behavior.
 ## Coverage and limits
 
 - 440 Hz across all nine channels and four operators, with MUL 0 (half rate),
-  1–10, 12 and 15. MUL 11/13/14 each have separate specification discrepancy tests.
+  and every integer ratio 1–15.
+- Phase increments at multiplier overflow boundaries and register endpoints,
+  plus sampled-sine spectra above Nyquist and across full-cycle phase wrap.
 - Low/high notes, fixed-frequency mode, channel pitch independence, and four-carrier
   mixing. Pitch expectations include register quantization and use the documented
   SID relationship: `frequency_word * 1,000,000 / 2^24`.
@@ -56,7 +58,10 @@ suite, prompting removal of the marker. They are not approved golden behavior.
 
 These are controlled signal tests, not a general perceptual quality score. The
 crossing-based frequency estimator is for isolated clean sines; it is not a pitch
-tracker for arbitrary FM patches. The local tick detector is for smooth signals,
+tracker for arbitrary FM patches. High-frequency pitch tests use a Hann-windowed
+periodogram with fourfold zero padding (0.25 Hz bin spacing for one second of audio).
+Sampled sines isolate pitch from BLEP waveshaping; expected frequencies include
+the normal folding above Nyquist. The local tick detector is for smooth signals,
 not intentional pulse/sync/ring-modulation discontinuities. Essentia is not required
 or integrated yet. MCU deadlines, concurrent bus writes, analog noise, full envelope
 rate tables, modulation sideband matrices and comprehensive aliasing sweeps remain
@@ -125,15 +130,28 @@ The plugin can report failure during regeneration; rerun to verify the result.
 Never regenerate baselines automatically in CI. Add new acoustic baselines with
 independent absolute limits and a documented reason for their tolerances.
 
-## Known failures in the initial core
+## Design choices, fixed defects and regression coverage
 
-| Test | Current behavior |
-| --- | --- |
-| Documented MUL 11/13/14 | Core uses OPL aliases 10/12/15, whereas README says 1–15 are linear |
-| High multiplier | 1000 Hz × 15 suffers phase-product truncation before halving |
+There are currently no tests marked as known defects. The marker and
+`--run-known-defects` option remain available for future confirmed issues.
 
-These four cases cover two issues. Resolve the specification choice for multiplier
-aliases before deciding whether to change the core or the documentation/test.
+Ratio mode deliberately adopts OPM/OPN semantics: MUL 0 selects ×0.5 and MUL
+1–15 selects the full integer range. Replacing the OPL aliases at 11/13/14
+(previously 10/12/15) is a design change, separate from the overflow fix.
+Imported OPL patches need those three MUL codes translated to preserve their
+frequency ratios. Integer multipliers use a direct
+32-bit product; MUL 0 uses a right shift. This avoids losing a half-cycle phase
+bit by overflowing an intermediate doubled product. For example, 1601 Hz ×15
+previously produced about 15 Hz instead of the expected alias near 24 kHz.
+Phase tests cover both sides of the 24 kHz and 48 kHz boundaries, including
+the natural unsigned phase wrap, on every operator.
+
+The original 1000 Hz ×15 failure was incorrectly attributed to this overflow:
+the spectrum already peaked at 15 kHz, but BLEP waveshaping disrupted the
+zero-crossing estimator. That test now measures the spectral peak, and separate
+sampled-sine and phase tests reproduce the actual overflow. BLEP behavior is
+unchanged by the multiplier fix.
+
 High-cutoff self-oscillation is accepted filter behavior, not by itself a defect.
 The recovery fix widens the two integrator products without limiting the cutoff or
 changing the saturation curve. `test_filter.py` compares a voice exposed to extreme

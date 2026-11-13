@@ -101,6 +101,15 @@ def estimate_frequency(samples):
     return SAMPLE_RATE / period
 
 
+def estimate_spectral_peak(samples):
+    """Strongest tone, resolved to Fs/(4*N); suitable for high-frequency pitch."""
+    frequencies, power = signal.periodogram(
+        np.asarray(samples, dtype=float), fs=SAMPLE_RATE, window="hann",
+        nfft=4 * len(samples),
+    )
+    return float(frequencies[np.argmax(power)])
+
+
 def rms_dbfs(samples):
     rms = np.sqrt(np.mean(np.asarray(samples, dtype=float)**2)) / FULL_SCALE
     return float(20 * np.log10(max(rms, 1e-15)))
