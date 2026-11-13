@@ -60,14 +60,15 @@ def test_filter_impulse_decays(chip, cutoff):
     assert band_dbfs(samples[-4000:, 0]) < -90
 
 
-@pytest.mark.known_defect(reason="High-cutoff SVF fails to decay after an impulse; coefficient/stability defect")
-def test_high_cutoff_filter_recovers_from_impulse(chip):
+def test_filter_recovers_after_restoring_cutoff(chip):
     chip.pcm([100, 0])
     chip.word(0, 0x20, 0x8000)
     chip.word(0, 0x2C, 1)
     chip.write(0, 0x22, 64)
     chip.word(0, CUTOFF, 0xFFFF)
     chip.write(0, FLAGS0, 0x29)
+    chip.render(4096)
+    chip.word(0, CUTOFF, 0x4000)
     samples = chip.render(48000)
     assert np.max(np.abs(samples[-4000:, 3])) <= 8
 

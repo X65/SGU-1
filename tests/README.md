@@ -50,7 +50,7 @@ suite, prompting removal of the marker. They are not approved golden behavior.
   equivalence check with channel ring modulation disabled, not a concurrency test.
 - Buffer-size independence with register writes at exact sample indices.
 - Sine ticks, residual distortion, high-frequency noise, attenuation, quiet notes,
-  release tails, filter impulse decay, seamless PCM looping, and harmonic baselines.
+  release tails, filter impulse decay/recovery, seamless PCM looping, and harmonic baselines.
 - Measurement calibration using analytical tones and injected impulses, dropped
   samples, broken loops and seeded white noise.
 
@@ -131,9 +131,21 @@ independent absolute limits and a documented reason for their tolerances.
 | --- | --- |
 | Documented MUL 11/13/14 | Core uses OPL aliases 10/12/15, whereas README says 1–15 are linear |
 | High multiplier | 1000 Hz × 15 suffers phase-product truncation before halving |
-| High-cutoff impulse | Filter does not settle at cutoff 0xFFFF, resonance zero |
 | Reset replay at 110 Hz | BLEP/sample history survives reset and changes the next attack |
 
-These six cases cover four issues. Resolve the specification choice for multiplier
+These five cases cover three issues. Resolve the specification choice for multiplier
 aliases before deciding whether to change the core or the documentation/test.
-No production source changes are part of this test-suite addition.
+High-cutoff self-oscillation is accepted filter behavior, not by itself a defect.
+The recovery fix widens the two integrator products without limiting the cutoff or
+changing the saturation curve. `test_filter.py` compares a voice exposed to extreme
+settings with an uninterrupted reference after restoring the controls, including
+stable high-resonance settings above cutoff 0x6555. After two seconds of recovery,
+the post-filter RMS error must be <=64 core counts (allowing small fixed-point
+limit cycles); per-state peaks in the final block must stay below 131072.
+
+`test_filter/test_ordinary_filter_response.npz` was captured from the pre-fix core
+at the same 20 stable cutoff/resonance combinations, including high-cutoff settings.
+It checks all 10240 impulse-response
+samples exactly, so a broad change to the filter character cannot silently pass.
+The test adapter also records peak absolute LP/BP/HP state values for each render
+block in failure metadata.

@@ -140,7 +140,7 @@ static inline uint32_t sgu_atomic_exchange32(uint32_t *word, uint32_t value)
 //  svf_saturate - cheap soft saturation for analog warmth
 //  Prevents harsh digital clipping, emulates analog op-amp behavior.
 //  Uses piecewise linear approximation (no division, no float).
-//  Knee at ±24576, 4:1 compression ratio above knee, max at ±32767.
+//  Knee at ±24576, 4:1 compression ratio above knee (not a hard clamp).
 //-------------------------------------------------
 static inline int32_t svf_saturate(int32_t x)
 {
@@ -1198,9 +1198,12 @@ void __attribute__((optimize("Ofast"))) SGU_NextSample_Channels(
             const int32_t drive = 256 + (ch_reg->reson >> 1);
             voice_sample = svf_saturate((voice_sample * drive) >> 8);
 
-            sgu->svf_low[ch] = svf_saturate(sgu->svf_low[ch] + ((ff * sgu->svf_band[ch]) >> 16));
+            // Large states after an unstable setting must still decay when the
+            // controls return to a stable range. Widen products to avoid wraparound
+            // trapping the filter; keep the coefficient and saturation unchanged.
+            sgu->svf_low[ch] = svf_saturate(sgu->svf_low[ch] + (int32_t)(((int64_t)ff * sgu->svf_band[ch]) >> 16));
             sgu->svf_high[ch] = voice_sample - sgu->svf_low[ch] - (((256 - ch_reg->reson) * sgu->svf_band[ch]) >> 8);
-            sgu->svf_band[ch] = svf_saturate(((ff * sgu->svf_high[ch]) >> 16) + sgu->svf_band[ch]);
+            sgu->svf_band[ch] = svf_saturate((int32_t)(((int64_t)ff * sgu->svf_high[ch]) >> 16) + sgu->svf_band[ch]);
 
             voice_sample = ((ch_flags0 & SGU1_FLAGS0_CTL_NSLOW) ? sgu->svf_low[ch] : 0)
                            + ((ch_flags0 & SGU1_FLAGS0_CTL_NSHIGH) ? sgu->svf_high[ch] : 0)

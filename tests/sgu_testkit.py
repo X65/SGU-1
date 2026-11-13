@@ -67,6 +67,9 @@ class Chip:
         samples = np.empty((count, 4), dtype=np.int32)
         self.lib.test_render(self.handle, count, channel, split,
                              self.ffi.from_buffer("int32_t[]", samples))
+        peaks = self.ffi.new("int64_t[3]")
+        self.lib.test_filter_peaks(self.handle, peaks)
+        self.evidence.update(filter_peaks=list(peaks))
         self.evidence.update(samples=samples, start_sample=self.position,
                              events=list(self.events), channel=channel)
         self.position += count

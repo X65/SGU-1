@@ -4,6 +4,7 @@
 
 struct TestChip {
     struct SGU core;
+    int64_t filter_peaks[3];
     int8_t pcm[SGU_PCM_BANK_SIZE];
 };
 struct TestChip *test_create(void) {
@@ -23,8 +24,12 @@ void test_pcm(struct TestChip *chip, unsigned address, int value) {
     chip->pcm[address] = value;
 }
 unsigned test_flags(struct TestChip *chip) { return SGU_GetFlags(&chip->core); }
+void test_filter_peaks(struct TestChip *chip, int64_t *output) {
+    for (unsigned i = 0; i < 3; ++i) output[i] = chip->filter_peaks[i];
+}
 void test_render(struct TestChip *chip, unsigned count, unsigned channel,
                  int split, int32_t *output) {
+    for (unsigned j = 0; j < 3; ++j) chip->filter_peaks[j] = 0;
     for (unsigned i = 0; i < count; ++i) {
         int32_t l = 0, r = 0;
         if (split < 0) {
@@ -36,6 +41,13 @@ void test_render(struct TestChip *chip, unsigned count, unsigned channel,
             SGU_NextSample_Channels(&chip->core, split, SGU_CHNS, &bl, &br);
             SGU_NextSample_Finalize(&chip->core, (int64_t)al + bl,
                                    (int64_t)ar + br, &l, &r);
+        }
+        const int32_t states[] = {chip->core.svf_low[channel],
+                                  chip->core.svf_band[channel],
+                                  chip->core.svf_high[channel]};
+        for (unsigned j = 0; j < 3; ++j) {
+            int64_t magnitude = llabs((long long)states[j]);
+            if (magnitude > chip->filter_peaks[j]) chip->filter_peaks[j] = magnitude;
         }
         output[4*i] = l;
         output[4*i+1] = r;
