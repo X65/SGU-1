@@ -35,6 +35,19 @@ Host software and target-side playback can be adapted to the target system. Curr
 
 Listen to the [SGU-1 playing other chips](https://www.youtube.com/playlist?list=PLbSCQdOP-_xh-mkkLIiCdmu_ArqHcOkYM) playlist for demonstrations of SGU-1 reproducing music written for other sound chips.
 
+## Testing
+
+The host-side pytest suite checks pitch, multipliers, register behavior, PCM,
+rendering equivalence, and audio quality (spectra, ticks, hiss and filter tails).
+See [the testing guide](tests/README.md) for setup, failure audio/plots, regression
+baselines, and currently tracked core defects.
+
+```sh
+python3 -m venv .venv
+.venv/bin/pip install -r requirements-test.txt
+.venv/bin/pytest --html=test-results/report.html
+```
+
 ## Documentation
 
 - [SGU-1 product page](https://x65.zone/sgu-1/)

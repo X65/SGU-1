@@ -1,0 +1,9 @@
+pytest>=8.3,<10
+cffi>=1.17,<3
+setuptools>=75
+numpy>=2,<3
+scipy>=1.14,<2
+matplotlib>=3.9,<4
+pytest-regressions>=2.6,<3
+pytest-html>=4.1,<5
+hypothesis>=6.120,<7
