@@ -516,14 +516,14 @@ static inline void phase_reset(struct sgu_ch_state *self, uint8_t ch, uint8_t op
 //-------------------------------------------------
 static void fm_channel_reset(struct sgu_ch_state *self, uint8_t ch)
 {
-    // reset our data
-    self->op_flags = 0; // clear all packed booleans
+    // Discard feedback, operator samples and BLEP history before reinitializing
+    // phase and envelopes. Otherwise the next attack depends on the last voice.
+    memset(self, 0, sizeof(*self));
     for (uint8_t op = 0; op < SGU_OP_PER_CH; op++)
     {
         phase_reset(self, ch, op);
         self->op[op].envelope_attenuation = 0x3ff;
         self->op[op].envelope_state = SGU_EG_RELEASE;
-        self->op[op].eg_delay_counter = 0;
     }
 }
 

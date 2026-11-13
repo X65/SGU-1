@@ -131,9 +131,8 @@ independent absolute limits and a documented reason for their tolerances.
 | --- | --- |
 | Documented MUL 11/13/14 | Core uses OPL aliases 10/12/15, whereas README says 1–15 are linear |
 | High multiplier | 1000 Hz × 15 suffers phase-product truncation before halving |
-| Reset replay at 110 Hz | BLEP/sample history survives reset and changes the next attack |
 
-These five cases cover three issues. Resolve the specification choice for multiplier
+These four cases cover two issues. Resolve the specification choice for multiplier
 aliases before deciding whether to change the core or the documentation/test.
 High-cutoff self-oscillation is accepted filter behavior, not by itself a defect.
 The recovery fix widens the two integrator products without limiting the cutoff or
@@ -149,3 +148,11 @@ It checks all 10240 impulse-response
 samples exactly, so a broad change to the filter character cannot silently pass.
 The test adapter also records peak absolute LP/BP/HP state values for each render
 block in failure metadata.
+
+Voice reset now clears the channel's feedback, operator sample values and BLEP
+history before restoring phase/noise seeds and envelope defaults. This work runs
+only for a voice reset; operator hard sync and the phase-reset timer keep their
+existing behavior. `test_reset.py` checks exact replay of all seven active waveforms
+on every channel/operator, plus feedback, FM and ring-modulated patches under full
+and voices-only reset. PCM waveform replay also verifies that reset preserves
+sample memory.

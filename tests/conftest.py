@@ -34,6 +34,7 @@ def native(tmp_path_factory):
         struct TestChip *test_create(void);
         void test_destroy(struct TestChip *);
         void test_reset(struct TestChip *);
+        void test_reset_parts(struct TestChip *, unsigned);
         void test_write(struct TestChip *, unsigned, unsigned);
         unsigned test_read(struct TestChip *, unsigned, unsigned);
         void test_pcm(struct TestChip *, unsigned, int);

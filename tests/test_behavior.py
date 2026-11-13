@@ -110,7 +110,6 @@ def test_register_writes_are_isolated(native, writes):
         instance.close()
 
 
-@pytest.mark.known_defect(reason="SGU_Reset leaves BLEP history, causing a transient when replaying a sine")
 def test_reset_clears_waveform_history(chip):
     chip.tone(hz=110, volume=8)
     expected = chip.render(8192)

@@ -14,6 +14,9 @@ struct TestChip *test_create(void) {
 }
 void test_destroy(struct TestChip *chip) { free(chip); }
 void test_reset(struct TestChip *chip) { SGU_Reset(&chip->core); }
+void test_reset_parts(struct TestChip *chip, unsigned parts) {
+    SGU_ResetParts(&chip->core, parts);
+}
 void test_write(struct TestChip *chip, unsigned address, unsigned value) {
     SGU_Write(&chip->core, address, value);
 }
